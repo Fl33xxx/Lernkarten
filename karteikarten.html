@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Netzwerktechnik Karteikarten</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: eine Spalte, oben Filter und Fortschritt, mittig die Karte, unten die Bewertung. */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --surface-2:#e8edf1; --fg:#14202b; --muted:#5a6b7a;
+  --line:#cfd8df; --accent:#0a6c74; --accent-fg:#ffffff; --good:#1f7a43; --bad:#b4372b;
+  --font-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f171e; --surface:#18232d; --surface-2:#223039; --fg:#e6edf2; --muted:#97a8b6;
+  --line:#2d3d49; --accent:#4cc3cc; --accent-fg:#06262a; --good:#5fcf8a; --bad:#ff8a7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f171e; --surface:#18232d; --surface-2:#223039; --fg:#e6edf2; --muted:#97a8b6;
+  --line:#2d3d49; --accent:#4cc3cc; --accent-fg:#06262a; --good:#5fcf8a; --bad:#ff8a7c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.45;
+  padding-block:20px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+h1{font-size:1.35rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.85rem;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.toggle{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--muted)}
+.bar{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;flex:1;min-width:120px}
+.bar>i{display:block;height:100%;background:var(--good);width:0;transition:width .2s}
+.stats{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.scene{perspective:1200px}
+.card{position:relative;min-height:300px;width:100%;border:0;padding:0;background:none;font:inherit;color:inherit;cursor:pointer;text-align:left;
+  transform-style:preserve-3d;transition:transform .35s}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:20px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.back{transform:rotateY(180deg);border-color:var(--accent)}
+.tag{font-family:var(--font-mono);font-size:.75rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.txt{font-size:1.2rem;line-height:1.4;margin:auto 0;white-space:pre-line;text-wrap:pretty}
+.back .txt{font-size:1.08rem}
+.hint{font-size:.8rem;color:var(--muted)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{font:inherit;font-weight:600;padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn.again{color:var(--bad)} .btn.known{color:var(--good)}
+.btn:hover{background:var(--surface-2)}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.tools .btn{padding:8px 12px;font-weight:400;font-size:.9rem}
+.done{padding:32px 16px;text-align:center;border:1px dashed var(--line);border-radius:10px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.card,.bar>i{transition:none}}
+@media (max-width:480px){.card{min-height:340px}.txt{font-size:1.1rem}}
+a.sub{color:var(--accent)}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <h1>Netzwerktechnik Karteikarten</h1>
+    <a class="sub" href="index.html">← Lernblätter</a> <span class="sub">Test Freitag 30.10. · Siemens Energy TKKNT5</span>
+  </header>
+  <div class="chips" id="chips" role="group" aria-label="Kapitel wählen"></div>
+  <div class="row">
+    <label class="toggle"><input type="checkbox" id="onlyOpen"> nur offene Karten</label>
+    <div class="tools">
+      <button class="btn" id="shuffle" type="button">Mischen</button>
+      <button class="btn" id="reset" type="button">Fortschritt löschen</button>
+    </div>
+  </div>
+  <div class="row"><div class="bar"><i id="barFill"></i></div><span class="stats" id="stats"></span></div>
+  <div class="scene" id="scene"></div>
+  <div class="btns" id="btns">
+    <button class="btn again" id="again" type="button">Nochmal</button>
+    <button class="btn known" id="known" type="button">Gewusst</button>
+  </div>
+  <p class="hint">Tippen oder Leertaste dreht die Karte. Pfeil links/rechts blättert. Taste 1 = Nochmal, 2 = Gewusst.</p>
+</div>
+
+<script>
+var CH={"1":"Kap 1 Einführung","2":"Kap 2 Infrastruktur","3":"Kap 3 Ethernet","4":"Kap 4 Switch/VLAN","5":"Kap 5 IPv4","6":"Kap 6 IPv6","7":"Kap 7 TCP/UDP","8a":"Kap 8a Routing","8b":"Kap 8b Firewall","9":"Kap 9 NAT"};
+var RAW=[
+// Kap 1
+"1|Die 7 OSI-Schichten von oben nach unten|7 Anwendung, 6 Darstellung, 5 Sitzung, 4 Transport, 3 Vermittlung, 2 Sicherung, 1 Bitübertragung",
+"1|Eselsbrücke für OSI 1 bis 7|Please Do Not Throw Sausage Pizza Away (Physical, Data Link, Network, Transport, Session, Presentation, Application)",
+"1|OSI: Wer hat es genormt, wann?|ISO, ab 1977 entwickelt, 1984 Standard ISO/IEC 7498-1",
+"1|PDU je Schicht: L4, L3, L2, L1|Segment, Paket, Frame, Bits",
+"1|Adresse je Schicht: L4, L3, L2|L4 Port, L3 IP-Adresse, L2 MAC-Adresse. L1 hat keine Adresse (nur Physik).",
+"1|TCP/IP-Modell: die 4 Schichten|Anwendung (OSI 5-7), Transport (4), Internet (3), Netzzugang (1-2)",
+"1|PDU und SDU: Unterschied?|PDU = Header + Daten einer Schicht. SDU = das, was von oben kommt. Die PDU der oberen Schicht ist die SDU der unteren.",
+"1|Was ist ein SAP?|Service Access Point: Bitfolge, die das nächste eingebettete Protokoll adressiert. Beispiele: Port, IP-Protokollfeld, Ethernet-Typfeld, DSAP/SSAP.",
+"1|Netzarten von klein nach groß|BAN, PAN, LAN, MAN, WAN, GAN/Internet",
+"1|IEEE 802.1, 802.3, 802.11, 802.15|Bridging und VLAN / Ethernet / WLAN / WPAN (Bluetooth, ZigBee)",
+"1|RFC-Nummern: IP, ICMP, TCP, UDP|IP 791, ICMP 792, TCP 793, UDP 768",
+"1|Wer macht LAN-Standards, wer Internet-Standards?|IEEE (802.x) / IETF (RFCs)",
+"1|Senden und Empfangen im Schichtenmodell|Senden: jede Schicht hängt einen Header an. Empfangen: Header werden der Reihe nach abgearbeitet und entfernt.",
+// Kap 2
+"2|Stern-Topologie: Vor- und Nachteile|+ eigene Leitung pro Gerät, zentrale Wartung. - viel Kabel, zentrale Komponente nötig. LAN-Standard.",
+"2|Bus-Topologie: Nachteile|Shared Medium, jeder sieht alles, nur Halbduplex. Im LAN veraltet.",
+"2|Leitungscode: 10BaseT, 100BaseTX, 1000BaseT|Manchester, MLT-3 (vorher 4B/5B), PAM-5",
+"2|Manchester-Code|Flankenwechsel in Bitmitte, Takt steckt im Signal. Max. 10 MHz bei 10 Mbit/s.",
+"2|MLT-3|3 Zustände (+1, 0, -1). Max. 31,25 MHz bei 125 Mbit/s. Für 100BaseTX.",
+"2|PAM-5 (1000BaseT)|5 Pegel, 4 davon für Daten (2 Bit je Pegel). 4 Paare, je 125 Megasymbole/s, 62,5 MHz Schwerpunkt, 250 Mbit/s je Paar.",
+"2|Dämpfung in dB: Formeln und Merkwerte|Spannung 20·lg(U1/U2), Leistung 10·lg(P1/P2). Spannung: -3 dB ≈ 71 %, -6 dB = 50 %, -20 dB = 10 %.",
+"2|Basisband und Breitband|Basisband: digital, ganzes Spektrum, Zeitmultiplex (Ethernet). Breitband: analog, Frequenzmultiplex (Kabel-TV).",
+"2|Schirmung nach ISO/IEC 11801 (XX/YTP)|XX = Gesamtschirm, Y = Aderschirm. U ungeschirmt, F Folie, S Geflecht, SF Geflecht + Folie. Beispiele: U/UTP, S/FTP.",
+"2|Warum sind Adernpaare verdrillt?|Verdrillung löscht Störungen aus und verringert Übersprechen.",
+"2|Cat 3, 5e, 6, 6A, 7, 7A, 8: Frequenzen|16, 100, 250, 500, 600, 1000, 2000 MHz",
+"2|Was kann Cat 6A?|10GBase-T auf 100 m (500 MHz).",
+"2|Kategorie und Klasse: Unterschied|Kategorie = Bauteil (Kabel, Stecker, Patchfeld). Klasse = ganze Strecke. D 100 MHz, E 250 MHz, F 600 MHz.",
+"2|Normen: ISO/IEC 11801, EN 50173, EN 50174|11801 Verkabelung allgemein, 50173 strukturierte Verkabelung, 50174 Installation",
+"2|RJ-45 Pinbelegung bei 10/100BaseT und 1000BaseT|10/100: Pin 1,2 und 3,6. 1000BaseT: alle 4 Paare. ISDN: 4,5 und 3,6.",
+"2|EIA/TIA 568A und 568B|Zwei Farbcodes. Paar 2 und 3 sind vertauscht. Auf einen festlegen.",
+"2|Crossover-Kabel|Sender des einen an Empfänger des anderen. Heute meist unnötig durch Auto-MDI/MDIX.",
+"2|Permanent Link und Channel Link|Permanent Link 90 m (fest verlegt). Channel Link 100 m (plus Anschlusskabel, 2 x 5 m).",
+"2|NEXT / FEXT|Übersprechen am nahen / fernen Ende. Größer ist besser.",
+"2|ACR|Attenuation to Crosstalk Ratio: Differenz aus NEXT und Dämpfung. Störabstand, höher ist besser.",
+"2|Return Loss|Rückflussdämpfung: Reflexion an Knicken, Steckern, Impedanzsprüngen. Höher ist besser.",
+"2|Alien Crosstalk|Übersprechen von einem Kabel zum anderen. Tritt bei gebündelten Kabeln auf.",
+"2|Optische Fenster|850 nm (LED, kurz, billig), 1310 nm und 1550 nm (Laser, weit, teurer)",
+"2|Singlemode und Multimode im Vergleich|SMF: Kern 9/125 µm, ein Strahl, keine Dispersion, 80-100 km, Laser. MMF: Kern 50 oder 62,5 µm, Dispersion, Gradientenindex verringert sie.",
+"2|Dispersion|Laufzeitunterschied der Strahlen im Multimode-LWL.",
+"2|LWL-Kategorien|OM1-OM5 (Multimode), OS1/OS2 (Singlemode)",
+"2|LWL-Stecker|SC (einziger in EN 50173), LC (klein, für SFP), ST, MIC (FDDI), MT-RJ",
+"2|PC und APC|PC = Physical Contact, gerader leicht gewölbter Schliff. APC = Angled PC, Schrägschliff, grün, bessere Rückflussdämpfung.",
+"2|Module SFP, SFP+, SFP28, QSFP+, QSFP28|1G, 10G, 25G, 40G, 100G",
+"2|Fusionsspleiß und Pigtail|Fasern per Lichtbogen verschmelzen, sehr dämpfungsarm. Pigtail = Faser mit Stecker, wird angespleißt.",
+"2|CWDM und DWDM|Beide: mehrere Wellenlängen auf einer Faser. DWDM: sehr enger Abstand (0,4-1,6 nm), teuer. CWDM: 20 nm Abstand, 18 Kanäle, günstiger, bis 70 km, MAN.",
+"2|Strukturierte Verkabelung: 3 Ebenen|Primär (Gelände, SV zu GV, LWL), Sekundär (Gebäude, GV zu EV, LWL oder TP), Tertiär (Etage, EV zu TA, max. 90 m, TP oder LWL)",
+"2|Primär + Sekundär = ?|Backbone (Core). Tertiär = Access.",
+"2|Verteiler-Abkürzungen|SV Standortverteiler, GV Gebäudeverteiler, EV Etagenverteiler, TA Teilnehmeranschluss",
+"2|Warum nicht in den Laser sehen?|Infrarot ist unsichtbar, schädigt trotzdem die Augen.",
+"2|Koax: 10Base5 und 10Base2|10Base5 RG-11, gelb, dick, 50 Ohm. 10Base2 RG-58, dünn, 50 Ohm (Cheapernet). Kabel-TV: 75 Ohm.",
+// Kap 3
+"3|CSMA/CD: Ablauf|Carrier Sense: erst ins Medium hören. Multiple Access: alle teilen ein Medium. Collision Detection: beim Senden mithören. Kollision: Jam-Signal, Abbruch, Zufallszeit warten, neu senden. Nur Halbduplex.",
+"3|Warum mindestens 64 Byte Frame?|Eine Kollision muss noch während des Sendens erkannt werden.",
+"3|MAC-Adresse: Aufbau|48 Bit (6 Byte), hex. 24 Bit Herstellercode (OUI) + 24 Bit laufende Nummer.",
+"3|I/G-Bit und U/L-Bit|I/G (1. Bit): 0 Individual, 1 Gruppe. U/L (2. Bit): 0 global (Standard), 1 lokal administriert.",
+"3|Broadcast-MAC / STP-Multicast / Pause-Multicast|FF-FF-FF-FF-FF-FF / 01-80-C2-00-00-00 / 01-80-C2-00-00-01",
+"3|Internet-Multicast-MAC (IPv4)|01-00-5E-xx-xx-xx",
+"3|Ethernet-Frame: Felder der Reihe nach|Präambel (7 Byte), SFD (1), DA (6), SA (6), Länge/Typ (2), Daten (46-1500), FCS (4), danach IFG (96 Bit)",
+"3|Präambel und SFD|Präambel: 7 Byte 10101010, Bitsynchronisation. SFD: 10101011, Frame-Beginn.",
+"3|Wozu die Interframe Gap?|Die Frame-Länge ist unbekannt, die Pause (96 Bit) grenzt zwei Frames ab.",
+"3|Frame-Länge min und max|64 Byte bis 1518 Byte (ohne Präambel). Mit VLAN-Tag 1522 Byte (802.3ac).",
+"3|Länge oder Typ im Feld?|Wert 1500 oder kleiner: Länge (IEEE 802.3, dann LLC). Wert größer als 1500 (0x05DC): Typ (Ethernet II / DIX).",
+"3|EtherTypes: IPv4, IPv6, ARP, VLAN, Pause|0x0800, 0x86DD, 0x0806, 0x8100, 0x8808",
+"3|FCS|32 Bit CRC über Header und Daten. Falsch: Frame wird verworfen. Wiederholung macht eine höhere Schicht (TCP).",
+"3|Padding|Füllbytes, wenn das Datenfeld unter 46 Byte ist.",
+"3|LLC im 802.3-Frame|DSAP + SSAP (je 1 Byte) + Control (1 Byte, 0x03 = unnummeriert). Ersetzt das Typfeld. Beispiel: 0x42 für STP.",
+"3|SNAP|DSAP/SSAP = 0xAA, Control 0x03, dazu 5 Byte (3 Byte OUI + 2 Byte Protokoll). Datenfeld wird 38-1492 Byte, deshalb nutzen viele Ethernet II.",
+"3|Tagged Frame (802.1Q)|4 Byte nach der Quelladresse: TPID 0x8100, PCP, DEI, VLAN-ID (12 Bit).",
+"3|Carrier Extension (Gigabit Halbduplex)|Min. Frame-Länge 512 Byte statt 64, damit die Kollisionsdomäne nicht zu klein wird.",
+"3|Jumbo Frames|Bis ca. 9000 Byte Nutzdaten (Folie: 9.014). Weniger Overhead.",
+"3|100BASE-TX lesen|100 Mbit/s, Basisband, Twisted Pair, X = Vollduplex-Variante.",
+"3|10GBASE-SW lesen|10 Gbit/s, Basisband, S = Short Wavelength (850 nm), W = WAN-PHY (64b/66b, SONET/SDH-Framing).",
+"3|Segmentlängen: -2, -5, -T|-2: 185 m (RG58, Cheapernet). -5: 500 m (RG11). -T: 100 m (Twisted Pair).",
+"3|Fiber-Varianten -FL, -FB, -FP|Fiber Link (FOIRL, bis ca. 1 km), Fiber Backbone, Fiber Passiv",
+"3|Wellenlängen S, L, E|S = 850 nm, L = 1310 nm, E = 1550 nm (Singlemode bis 40 km)",
+"3|10G-Zusätze R, X, W, 4, K, C, T|R 64b/66b LAN, X 8b/10b LAN, W 64b/66b WAN, 4 vier Wellenlängen, K Backplane, C Twinax, T Twisted Pair",
+"3|1000BASE-SX / LX / T / CX: Reichweiten|SX 550 m (50 µm), 275 m (62,5 µm). LX 5000 m SMF, 550 m MMF. T 100 m Cat 5e. CX 25 m Twinax.",
+"3|1000BASE-T: Besonderheiten|4 Paare, beide Richtungen gleichzeitig. 4 Transceiver, PAM-5, Trellis-Code und Scrambling, Echo-Kompensation, Cat 5e mit PS-NEXT.",
+"3|Echo-Kompensation|Trennt das selbst gesendete vom empfangenen Signal (Hybride + DSP-Filter), je Paar automatisch eingestellt.",
+"3|Standards: 802.3u, z, ab, ae, ba, af/at|Fast Ethernet, Gigabit LWL/CX, Gigabit TP, 10GE, 40/100GE, PoE",
+"3|Autonegotiation: Was wird ausgehandelt?|Geschwindigkeit, Duplex, MDI/MDI-X, Master/Slave (nur GE), DSP-Filter (nur GE)",
+"3|NLP und FLP|NLP (Normal Link Pulse): alle 16 ± 8 ms, überwacht den Link. FLP (Fast Link Pulse): Burst aus 33 Pulsen, 16 gerade tragen das 16-Bit Link Code Word.",
+"3|Autonegotiation: Prioritätsreihenfolge|1000T FDX, 1000T HDX, 100T2 FDX, 100TX FDX, 100T2 HDX, 100T4, 100TX HDX, 10T FDX, 10T HDX",
+"3|Parallel Detection|Partner antwortet nicht auf FLP: Standard wird am Signal erkannt, aber immer Halbduplex.",
+"3|Duplex-Mismatch|Eine Seite fest Vollduplex, die andere Auto (fällt auf Halbduplex): extrem langsam. In bekannter Umgebung fest konfigurieren.",
+"3|Autonegotiation bei LWL?|Gibt es nicht. Bei Gigabit über TP ist sie Pflicht.",
+"3|10 Gigabit Ethernet (802.3ae): Merkmale|Nur Vollduplex, kein CSMA/CD. Frame-Format wie 802.3. Link Aggregation. LAN-PHY und WAN-PHY.",
+"3|LAN-PHY und WAN-PHY|LAN-PHY genau 10 Gbit/s. WAN-PHY SONET OC-192 / SDH VC-4-64c: 9,95328 Gbit/s brutto, 9,58464 Gbit/s Nutzdaten.",
+"3|10GE: Reichweiten|100 m (62,5 µm MMF), 300 m (50 µm MMF), 2/10/40 km SMF, 30 m Cat 6, 100 m Cat 7",
+"3|40/100GE (802.3ba): Merkmale|Juni 2010. Erster Standard mit zwei Geschwindigkeiten. Bis 40 km. 40GBASE-SR4 100 m (OM3), -LR4 10 km, -T Cat 8 30 m.",
+"3|Access, Distribution, Core: Ethernet-Speeds|Access FE/GE, Distribution GE/10GE, Core 10GE bis 100GE",
+"3|PoE: elektrische Werte|48 V DC, 350 mA Dauer (500 mA für 100 ms), 100 m. 802.3af: 15,4 W am PSE, 12,95 W am PD.",
+"3|PSE und PD|PSE = Power Sourcing Equipment (Einspeiser). PD = Powered Device (Verbraucher).",
+"3|PoE: Endpoint oder Midspan?|Endpoint: Switch mit PoE. Midspan: spezielles Patchpanel dazwischen.",
+"3|PoE: Wie wird verhindert, dass normale Geräte kaputtgehen?|PSE schickt Teststromimpulse, erkennt den PoE-Widerstand, erst dann Strom. Kabel ab: Strom sofort aus.",
+"3|PoE: Variante A und B|A: Phantomspeisung über die Datenadern (auch GE). B: freie Adernpaare (nicht bei GE).",
+"3|PoE-Standards af, at, bt: Leistung|af 15,4 W, at/bt mehr (bt bis 70 W). Klassen 0-3 bei af: 15,4 / 4,0 / 7,0 / 15,4 W.",
+// Kap 4
+"4|Koppelkomponenten pro Schicht|L1 Repeater/Hub, L2 Bridge/Switch, L3 Router/L3-Switch, L4 L4-Switch, L5-7 Gateway",
+"4|Hub: Funktion|Layer 1. Leitet Bits an alle Ports, ein Frame zugleich, Shared Medium, CSMA/CD. Alle Ports gleiche Geschwindigkeit.",
+"4|4-Repeater-Regel|Im längsten Pfad max. 4 Hubs/Repeater (wegen CSMA/CD).",
+"4|Kann ein Hub das Medium ändern?|Ja (z.B. TP auf LWL), er setzt nur Signale um.",
+"4|Kann ein Switch das L2-Protokoll ändern?|Nur als Translation Bridge (z.B. WLAN auf Ethernet, ADSL-Modem ATM auf Ethernet).",
+"4|Gekreuzt oder nicht?|Zwischen 2 Endgeräten muss effektiv genau eine Kreuzung bleiben (Gesamtzahl ungerade). Auto-MDI/MDIX nimmt das ab.",
+"4|Kollisionsdomäne und Broadcast-Domäne|Kollisionsdomäne: ein Shared Medium (beim Switch je Port). Broadcast-Domäne: alles, was ein Broadcast erreicht (Switch ohne VLAN: alle Ports). Router und VLANs trennen sie.",
+"4|Self Learning|Bridge/Switch lernt die Quell-MAC jedes Frames mit dem Eingangsport (SAT, Source Address Table). Tabelle wird regelmäßig gelöscht (Aging).",
+"4|Ziel-MAC unbekannt, Multicast, Broadcast: was macht der Switch?|Flooding: an alle Ports außer dem Eingangsport.",
+"4|Switch vs. Hub: Vorteile|Eigene Kollisionsdomäne je Port, Vollduplex, keine Kollisionen, mehr Durchsatz, Daten nur zum Zielport (Datenschutz), frei kaskadierbar.",
+"4|Switch kommt aus welcher Technik?|Aus dem WAN: ATM. Dort Zellen gleicher Länge, im Ethernet unterschiedlich lange Frames.",
+"4|Store and Forward|Ganzen Frame lesen und puffern, FCS prüfen. Verzögerung ca. 100 µs. Verschiedene Port-Speeds möglich. Nur fehlerfreie Frames.",
+"4|Cut Through|Liest nur die ersten 6 Byte (bis DA), leitet sofort weiter. Unter 10 µs. Keine Fehlerprüfung, leitet Runts und CRC-Fehler weiter. Gleiche Port-Speeds nötig.",
+"4|Fragment Free|Liest die ersten 64 Byte, erkennt Runts. Ca. 60 µs. Cisco, wenig verbreitet. Keine FCS-Prüfung.",
+"4|Was ist ein Runt?|Zu kurzer Frame (unter 64 Byte), meist Kollisionsfragment.",
+"4|Adaptiver Switch|Cut Through bei wenigen Fehlern, schaltet bei vielen Fehlern auf Store and Forward.",
+"4|Switch blockierungsfrei?|Wenn Portzahl × Portgeschwindigkeit nicht größer als die Backplane-Geschwindigkeit ist.",
+"4|Zielport besetzt: Lösungen|Puffern (heute üblich). Ältere Switches: Kollisionssignal. Moderne: Sender mit PAUSE-Frames bremsen.",
+"4|Warum sind Broadcasts im Switch ein Problem?|Switch muss sie speichern und an alle Ports geben (Software). Lösung: VLANs.",
+"4|Welche Karten-Betriebsart zum Sniffen?|Promiscuous Mode. Tool: Wireshark. Rechtlich: §§ 202b, 202c StGB (Dual-Use-Tool).",
+"4|STP: Warum?|Schleifen in redundanten L2-Netzen: Broadcasts kreisen endlos, MAC-Tabellen lernen dauernd um. STP blockiert Ports und baut einen schleifenfreien Baum.",
+"4|STP: Ablauf in 4 Schritten|1) Root-Bridge wählen (niedrigste Bridge-ID = Prio + MAC, Standard 32768). 2) Root-Port je Nicht-Root-Bridge. 3) Designated Port je Segment. 4) Rest blockieren.",
+"4|STP: Portstatus der Rollen|Root-Switch alle Ports: Forwarding. Root-Port: Forwarding. Designated Port: Forwarding. Alle anderen: Blocking.",
+"4|BPDU und STP-MAC|Hello-Nachrichten der Bridges. Multicast 01-80-C2-00-00-00, LLC-SAP 0x42.",
+"4|Wie wird die Root-Bridge gewählt?|Niedrigste Bridge-ID (Priorität zuerst, dann MAC). Priorität nur in Vielfachen von 4096 einstellbar.",
+"4|STP-Pfadkosten (Folie)|100 Mbit/s = 200.000, 1 Gbit/s = 20.000. Niedriger ist besser.",
+"4|RSTP vs. STP|RSTP (802.1w): ereignisgesteuert, schnell (STP: timergesteuert, langsam). Zustände Discarding, Learning, Forwarding. Zusätzliche Rollen Alternate und Backup. Edge-Port. Abwärtskompatibel. Seit 2003 in 802.1D.",
+"4|Alternate- und Backup-Port|Alternate = Ersatz für Root-Port. Backup = Ersatz für Designated Port.",
+"4|Edge-Port|Geht sofort in Forwarding (hilft bei DHCP). Nur für Endgeräte, nicht Switch-zu-Switch. Sieht er mehrere MACs, wird er wieder normal.",
+"4|MSTP|Multiple Spanning Tree: mehrere Bäume für verschiedene VLANs (802.1s, seit 2005 in 802.1Q).",
+"4|Link Aggregation: Was und Standard?|Bis zu 8 Links zu einem logischen Link bündeln. Mehr Bandbreite, Redundanz. IEEE 802.3ad, seit 2008 802.1AX. Cisco: EtherChannel.",
+"4|LACP: Modi|active (startet die Aushandlung) und passive (wartet). IEEE-Standard.",
+"4|LACP-Vorteil gegenüber statisch|Erkennt Ausfall auch hinter Medienkonverter. Beide Seiten bestätigen die Konfiguration.",
+"4|PAgP (Folie: LAgP)|Cisco-Protokoll. Modi desirable (aktiv) und auto (passiv).",
+"4|VLAN: Was und wofür?|Logische Aufteilung eines Switches in getrennte L2-Netze (802.1Q). Sicherheit, kleinere Broadcast-Last, flexible Größen. Kein Verkehr zwischen VLANs ohne Router.",
+"4|Trunk-Port (tagged) und Access-Port (untagged)|Trunk: Frames tragen das VLAN-Tag, kein normales Endgerät dran. Access: Endgeräte, ohne Tag. VLAN-IDs beidseitig gleich.",
+"4|802.1Q-Tag: Aufbau|4 Byte: TPID 0x8100 (2 Byte), TCI (2 Byte) = PCP 3 Bit + DEI 1 Bit + VLAN-ID 12 Bit",
+"4|Gültige VLAN-IDs|1 bis 4094 nutzbar. 0 = nur Prio (802.1p), 4095 reserviert. VLAN 1 = Default.",
+"4|802.1p: Prioritäten (PCP 0-7)|BK Background, BE Best Effort (0), EE Excellent Effort, CA Critical Applications, VI Video (unter 100 ms), VO Voice (unter 10 ms), IC Internetwork Control, NC Network Control",
+"4|VLAN und IP-Netz: Zusammenhang|Unabhängig (Layer 2 und 3). Sinnvoll: ein VLAN = ein IP-Netz, gekoppelt über Router mit ACL.",
+"4|Mirror-Port|Switch kopiert Verkehr an einen Port, damit ein Sniffer mitlesen kann.",
+"4|PAUSE-Frame (802.3x)|Nur Vollduplex. Empfänger bremst den Sender. Ziel 01-80-C2-00-00-01, Typ 0x8808, Opcode 0x0001, Pausenzeit in 512-Bit-Zeiten, Zeit 0 = weiter senden.",
+"4|L3-Switch|Router im Switch. Jedes VLAN hat eine IP-Adresse (Interface VLAN) und ist Default Gateway für seine Geräte.",
+"4|L4-Switch|Liest bis zum TCP/UDP-Port und leitet nach Anwendung an den richtigen Server (unabhängig von MAC).",
+"4|L4-7-Switch / Load Balancing|Nutzer sieht einen Server. Switch verteilt auf mehrere Server: Round Robin oder nach Auslastung.",
+// Kap 5
+"5|Wer macht was: ISOC, IAB, IETF, IANA, ICANN|ISOC Internet Society (Dach). IAB Architecture Board. IETF Engineering Task Force (Standards, freiwillig). IANA vergibt Adressen/Ports/Nummern. ICANN Namen und Nummern.",
+"5|Die 5 RIRs|ARIN (Amerika), RIPE NCC (Europa), APNIC (Asien/Pazifik), LACNIC (Lateinamerika), AFRINIC (Afrika)",
+"5|IP-Adressvergabe: Hierarchie|IANA, RIR, LIR (Provider), Kunde",
+"5|RFC-Stati|Informational, Experimental, BCP, Proposed Standard, Draft Standard (nicht mehr), Internet Standard (STD), Historic, Obsolete",
+"5|IPv4-Klassen: 1. Byte und Hosts|A 1-126 (16.777.214 Hosts), B 128-191 (65.534), C 192-223 (254), D 224-239 Multicast, E 240-255 reserviert",
+"5|Klasse A, B, C: Netz-/Hostbits|A 8/24, B 16/16, C 24/8",
+"5|Netzadresse und Broadcast-Adresse|Netzadresse: alle Hostbits 0. Broadcast: alle Hostbits 1. Deshalb Hosts = 2^n - 2.",
+"5|Private IPv4-Bereiche (RFC 1918)|10.0.0.0/8, 172.16.0.0/12 (172.16-172.31), 192.168.0.0/16",
+"5|APIPA / Link-Local IPv4|169.254.0.0/16 (RFC 3927). Der Client nimmt sie selbst, wenn kein DHCP antwortet.",
+"5|100.64.0.0/10|Carrier-Grade NAT (RFC 6598), z.B. Dual-Stack Lite.",
+"5|127.0.0.0/8|Loopback",
+"5|Wofür die Netzmaske?|Grenze zwischen Netz- und Hostanteil (Einsen links, Nullen rechts). Host/Router entscheidet: Ziel im gleichen Netz (direkt, ARP) oder nicht (Gateway).",
+"5|Hosts bei Präfix /n|2^(32-n) - 2. Beispiel /27: 30. /22 (255.255.252.0): 1022.",
+"5|Maskenbyte-Werte|128, 192, 224, 240, 248, 252, 254, 255 (1 bis 8 Einsen)",
+"5|Blockgröße im Subnetting|256 minus Masken-Byte. /27 = .224, Blockgröße 32.",
+"5|Subnetting: Was passiert mit einem Bit mehr?|Doppelt so viele Netze, halb so viele Hosts je Netz.",
+"5|CIDR (RFC 4632)|Klassenlos. Schreibweise Adresse/Präfix. Beispiel 132.215.63.9 /19 = 255.255.224.0, Netz 132.215.32.0.",
+"5|VLSM|Subnetze unterschiedlicher Größe. Größten Bedarf zuerst vergeben, an eigener Grenze, ohne Überlappung.",
+"5|Supernetting / Route Aggregation|Mehrere Netze zu einer Route zusammenfassen. 172.16.0.0 bis 172.31.0.0 (16 Klasse-B-Netze) = 172.16.0.0/12.",
+"5|192.168.123.55 /27: Netz, Broadcast, Hosts|Netz 192.168.123.32, Broadcast .63, Hosts .33 bis .62 (30)",
+"5|192.168.123.55 /29: Auffälligkeit?|Netz .48, Broadcast .55: die Adresse ist die Broadcast-Adresse, als Host unzulässig.",
+"5|83.190.125.13 /13|Netz 83.184.0.0, Broadcast 83.191.255.255, 524.286 Hosts",
+"5|129.103.67.98 /18|Netz 129.103.64.0, Broadcast 129.103.127.255, 16.382 Hosts",
+"5|189.188.177.166 /19|Netz 189.188.160.0, Broadcast 189.188.191.255, 8.190 Hosts",
+"5|10.200.155.243 /25|Netz 10.200.155.128, Broadcast 10.200.155.255, 126 Hosts",
+"5|VLSM-Übung 222.111.0.0/24: Aufteilung|A (100 Hosts) /25 .0, B (20) /27 .128, C (10) /28 .160, W und O (je 2) /30 .176 und .180",
+"5|Falle: .213 und .230 mit /27|Konfigurierbar, aber in verschiedenen Netzen (.192er: 192-223, .224er: 224-255).",
+"5|ARP: Aufgabe und Ablauf|Findet die MAC zu einer IP im gleichen Netz. Request als Broadcast (FF:FF:FF:FF:FF:FF) 'Wer hat IP x?', Reply als Unicast mit der MAC. Ergebnis im ARP-Cache.",
+"5|ARP: Ziel in anderem Netz|ARP fragt nach dem Default Gateway. Paket trägt MAC des Routers, aber IP des echten Ziels.",
+"5|ARP-Cache-Befehle|arp -a anzeigen, arp -d löschen. Einträge verfallen nach ca. 2 Minuten ohne Nutzung.",
+"5|ARP-Spoofing|Angreifer antwortet mit falscher MAC, leitet Verkehr um: Man-in-the-Middle.",
+"5|IPv4-Header: Größe und IHL|Min. 20 Byte (IHL 5 = 5 × 32 Bit), max. 60 Byte.",
+"5|IPv4-Header: Felder|Version, IHL, DiffServ, Total Length, Identification, Flags, Fragment Offset, TTL, Protocol, Header Checksum, Source, Destination, Options, Padding",
+"5|TTL|Wird je Router um 1 verringert, bei 0 verworfen. Schutz vor Schleifen.",
+"5|IP-Protokollnummern|ICMP 1, TCP 6, UDP 17, IPv6-in-IPv4 41",
+"5|Fragmentierung: Felder|Identification (gleich für alle Fragmente), Flags DF und MF, Fragment Offset (in 8-Byte-Blöcken, 13 Bit). Zusammensetzen macht der Empfänger.",
+"5|Header Checksum|Prüft nur den Header, nicht die Daten.",
+"5|ICMP (RFC 792)|Fehler- und Statusmeldungen, Protokoll 1, in IP-Paketen gekapselt. Ping (Echo Request/Reply), Traceroute (TTL, Time Exceeded), Destination Unreachable.",
+"5|DHCP: Ablauf|DORA: Discover (Broadcast, 0.0.0.0 an 255.255.255.255), Offer, Request, Acknowledge. UDP.",
+"5|DHCP liefert|IP-Adresse, Maske, Default Gateway, DNS-Server, Lease-Time.",
+"5|DHCP-Lease: Verlängerung|Nach der Hälfte der Lease-Time neuer REQUEST, Server antwortet mit ACK.",
+// Kap 6
+"6|IPv6: Adresslänge und Anzahl|128 Bit, 2^128 ≈ 3,4 × 10^38 Adressen (2^96 mal mehr als IPv4).",
+"6|Warum ist IPv6 noch nicht überall?|IPv4 reicht noch, Hardware-Kosten, Bequemlichkeit, 'Never touch a running system'. Internet-Standard erst seit Juli 2017 (RFC 8200).",
+"6|IPv6-Header: Größe|Fest 40 Byte. Keine Header-Checksumme.",
+"6|IPv6-Header: Felder|Version (6), Traffic Class (8), Flow Label (20), Payload Length (16), Next Header (8), Hop Limit (8), Source (128), Destination (128)",
+"6|Flow Label|20 Bit, markiert zusammengehörige Pakete für QoS im Router.",
+"6|Next Header / Hop Limit|Next Header: nächster Header (wie Protocol bei IPv4). Hop Limit: wie TTL.",
+"6|Payload Length = 0|Jumbo-Paket über 64 kB, Länge steht im Hop-by-Hop-Header.",
+"6|3 Unterschiede IPv4 zu IPv6|128 statt 32 Bit, fester Header ohne Checksumme, Router fragmentieren nicht, kein Broadcast, NDP statt ARP, SLAAC.",
+"6|IPv6-Erweiterungsheader und Werte|Hop-by-Hop 0, Routing 43, Fragment 44, ESP 50, AH 51, ICMPv6 58, Destination Options 60, Mobility 135",
+"6|Routing-Header (43)|Liste von Zwischenknoten. Typ 0 wegen Sicherheit abgeschafft.",
+"6|Fragment-Header (44)|Fragmentierung, nur der Absender fragmentiert. Offset 13 Bit (8-Byte-Einheiten), M-Flag, 32-Bit Identification.",
+"6|IPsec: Ziel|Kommunikation über unsichere Netze authentifiziert, integer und vertraulich.",
+"6|AH und ESP: Unterschied|AH (51): Echtheit und Integrität, keine Verschlüsselung. ESP (50): Verschlüsselung (und optional Integrität).",
+"6|SPI und Sequence Number|SPI zeigt auf die Security Association (Algorithmen, Schlüssel). Sequence Number schützt vor Replay.",
+"6|IPsec Transportmodus und Tunnelmodus|Transport: Original-IP-Header bleibt, nur Nutzdaten geschützt (End-to-End). Tunnel: ganzes Paket in neues IP-Paket (Site-to-Site, End-to-Site).",
+"6|IPv6 schreiben: Regeln (RFC 5952)|Hex, 16-Bit-Blöcke mit ':', führende Nullen weg, längste Null-Folge einmal als '::' (bei Gleichstand die erste).",
+"6|1234:0000:0000:0000:5678:0000:0000:0bcd kürzen|1234::5678:0:0:bcd",
+"6|IPv6-Adresse in URL|In eckigen Klammern: https://[2001:db8::1234:5678]:443",
+"6|Adressarten IPv6|Unicast (einer), Anycast (der nächste einer Gruppe), Multicast (alle einer Gruppe). Kein Broadcast.",
+"6|::/128 und ::1/128|Unspezifiziert (noch keine Adresse, nur als Quelle) und Loopback (verlässt den Knoten nie)",
+"6|fe80::/10|Link-Local Unicast. Nur im Link, nicht geroutet, für Autokonfiguration und NDP. Wie APIPA.",
+"6|fc00::/7 (fd00::/8)|Unique Local Address (ULA), privat wie 10.x. 40 Bit Global-ID zufällig, 16 Bit Subnet-ID.",
+"6|2000::/3|Global Unicast (öffentlich). 3 Bit + 45 Bit Routing-Prefix + 16 Bit Subnet-ID + 64 Bit Interface-ID.",
+"6|Wie groß ist ein IPv6-Subnetz?|/64 (Interface-ID 64 Bit). Mit /48 vom Provider: 16 Bit Subnet-ID = 65.536 Subnetze.",
+"6|Multicast-Präfix IPv6|ff00::/8",
+"6|Multicast-Adressen ff02::1, ff02::2, ff02::1:2|Alle Knoten (Link), alle Router (Link), DHCPv6-Server",
+"6|Multicast-Scope-Werte|1 interface-local, 2 link-local, 5 site-local, e global",
+"6|Solicited-Node-Multicast|ff02::1:ff + untere 24 Bit der Adresse (/104). Für NDP.",
+"6|Anycast|Eine Adresse auf mehreren Geräten (z.B. redundante Router), das Paket geht zum nächsten.",
+"6|::ffff:a.b.c.d|IPv4-mapped IPv6-Adresse",
+"6|EUI-64: MAC 00:50:2c:01:5d:b7 zu Link-Local|ff:fe in die Mitte, 7. Bit (U/L) umdrehen: 02:50:2c:ff:fe:01:5d:b7, also fe80::250:2cff:fe01:5db7",
+"6|Privacy Extensions|Zufällige, wechselnde Interface-ID statt MAC-basierter. Altes wird 'deprecated'.",
+"6|SLAAC: Ablauf|Link-Local bilden, DAD, Router Solicitation (an ff02::2), Router Advertisement (an ff02::1) mit Präfix, Global = Präfix + Interface-ID",
+"6|ICMPv6|Pflicht für IPv6, Next Header 58. Fehler- und Informationsmeldungen. Trägt auch NDP.",
+"6|NDP: Aufgabe|Ersetzt ARP (RFC 4861). Läuft über ICMPv6, daher unabhängiger vom Link-Layer. Auch DAD und SLAAC.",
+"6|NDP-ICMPv6-Typen 133 bis 137|133 Router Solicitation, 134 Router Advertisement, 135 Neighbor Solicitation, 136 Neighbor Advertisement, 137 Redirect",
+"6|DAD|Duplicate Address Detection: prüft, ob eine Adresse schon vergeben ist.",
+"6|Fragmentierung bei IPv6|Router fragmentieren nicht. Host ermittelt Path MTU (ICMPv6 'Packet Too Big') und fragmentiert selbst.",
+"6|Dual Stack|IPv4 und IPv6 laufen parallel auf allen Knoten.",
+"6|Dual Stack Lite (RFC 6333)|Kunde nur IPv6. IPv4 wird in IPv6 zum Carrier-Grade NAT des Providers getunnelt (100.64.0.0/10). Nachteil: kein IPv4-Portforwarding von außen.",
+"6|6in4-Tunnel|IPv6-Paket in IPv4-Paket (Protokoll 41) zwischen zwei Dual-Stack-Routern.",
+"6|6to4 (RFC 3056)|Präfix 2002::/16 + IPv4-Adresse in Hex. 123.156.67.42 wird 2002:7b9c:432a::. Tunnelziel Anycast 192.88.99.1. Braucht öffentliche IPv4.",
+"6|Mobile IPv6|Mobility-Header. Home Agent vertritt das Gerät, Care-of-Address im Fremdnetz, Binding Updates.",
+// Kap 7
+"7|Portbereiche|0-1023 System (Well Known), 1024-49151 User (Registered), 49152-65535 privat/dynamisch",
+"7|Was ist ein Socket?|IP-Adresse + Port, z.B. 192.168.1.10:80",
+"7|Ports: FTP, SSH, Telnet, SMTP|20/21, 22, 23, 25",
+"7|Ports: DNS, TFTP, HTTP, POP3|53, 69, 80, 110",
+"7|Ports: NTP, IMAP, HTTPS|123, 143, 443",
+"7|Ports: IMAPS, POP3S, NetBIOS|993, 995, 137-139",
+"7|Die 4 Aufgaben von TCP|Segmentierung, Verbindungsmanagement, Fehlerbehandlung, Flusssteuerung",
+"7|Three-Way-Handshake|Client SYN, Server SYN+ACK, Client ACK. Dann Daten.",
+"7|TCP-Verbindungsabbau|FIN, ACK, dann FIN, ACK (von jeder Seite möglich).",
+"7|TCP-Fehlerbehandlung|Sequenznummern, ACK pro Paket, Timer. Kein ACK vor Ablauf: Paket neu senden.",
+"7|TCP-Flusssteuerung|In den Endgeräten. Fenster wächst, bis Pakete verloren gehen, dann halbiert. Sliding Window: mehrere Pakete ohne einzelnes ACK.",
+"7|TCP-Header: Größe und Felder|20-60 Byte. Source Port, Dest Port, Seq Nr, Ack Nr, Data Offset, Reserved, Flags, Window, Checksum, Urgent Pointer, Options.",
+"7|TCP-Flags|SYN Aufbau, ACK Bestätigung, FIN Abbau, RST Abbruch, PSH sofort weitergeben, URG dringend, CWR und ECE Staukontrolle",
+"7|Window-Feld im TCP-Header|Wie viele Bytes der Empfänger noch annimmt (Schutz vor Pufferüberlauf).",
+"7|Ack-Nummer|Nächstes erwartetes Byte (nur gültig mit ACK-Flag).",
+"7|UDP-Header|8 Byte: Source Port, Dest Port, Length, Checksum (je 16 Bit). Checksum bei IPv4 optional.",
+"7|UDP: wofür?|DNS, DHCP, NTP, TFTP, Sprache/Video, RIP. Schnell, kein Overhead, Anwendung macht ggf. selbst Kontrolle.",
+"7|TCP und UDP im Vergleich|TCP: verbindungsorientiert, zuverlässig, Reihenfolge, Flusssteuerung. UDP: verbindungslos, keine Garantie, schnell.",
+"7|UDP-Lite (RFC 3828)|Protokoll 136. Length wird Checksum Coverage (Prüfsumme nur über Teil der Daten). Für Daten, bei denen kleine Fehler egal sind.",
+// Kap 8a
+"8a|Aufgaben eines Routers|Netze verbinden, beste Wege wählen, redundante Wege, Technologien koppeln, Broadcast begrenzen, QoS",
+"8a|Routing und Forwarding|Routing: Tabelle aufbauen. Forwarding: Paket anhand der Tabelle weiterleiten. Zwei getrennte Prozesse.",
+"8a|Spalten einer Routing-Tabelle|Ziel, Next Hop, Interface, Art (connected, statisch, dynamisch), Metrik",
+"8a|Default Route|0.0.0.0/0. Alle Pakete ohne eigenen Eintrag gehen dorthin.",
+"8a|Statisches Routing: Vor- und Nachteile|+ Weg bekannt, keine CPU-Last, kein Protokollverkehr. - Änderungen mühsam, Ersatzwege von Hand. Für kleine Netze.",
+"8a|Dynamisches Routing: Vor- und Nachteile|+ Ersatzwege, automatische Reaktion, lastabhängig. - mehr CPU/Speicher, Protokollverkehr. Für große Netze.",
+"8a|Statische Route setzen (Windows, Cisco)|route add Netz mask Maske Gateway / ip route Netz Maske NextHop. Rückroute nicht vergessen!",
+"8a|Classful und Classless|Classful (Maske nicht im Update): RIPv1, IGRP. Classless: RIPv2, EIGRP, OSPF, IS-IS, BGP4.",
+"8a|Distance Vector und Link State: Protokolle|DV: RIP, RIPv2, RIPng. LS: OSPF (v2, v3 für IPv6). Mischform: IGRP, EIGRP.",
+"8a|Distance Vector: Prinzip|Router kennt Distance (Hops) und Vector (Richtung). Glaubt den Nachbarn. Tabelle wird regelmäßig ausgetauscht.",
+"8a|RIP: Eckwerte|Update alle 30 s mit kompletter Tabelle. RIPv1 Broadcast, RIPv2 Multicast. UDP. Max. 15 Hops, 16 = unerreichbar. RFC 1058.",
+"8a|Count-to-Infinity und Lösungen|Zwei Router melden sich ein ausgefallenes Netz gegenseitig zu, Hop-Count steigt bis 16. Lösung: Split Horizon (Info nie zurück in die Richtung, aus der sie kam) und Route Poisoning (Metrik 16 melden).",
+"8a|Link State: Prinzip|Jeder Router kennt die ganze Topologie (LSDB) und berechnet mit Dijkstra (SPF) den besten Weg. Hello-Pakete, LSAs bei Änderungen.",
+"8a|OSPF: Eckwerte|RFC 2328 (STD 54). Areas, Pfadkosten, CIDR, VLSM, Load Balancing. Viel CPU und Speicher.",
+"8a|OSPF: 5 Pakettypen|Hello, Database Description, Link State Request, Link State Update, Link State Ack",
+"8a|OSPF: Area 0|Backbone Area. Alle anderen Areas müssen direkt dran hängen (oder per Virtual Link).",
+"8a|OSPF: DR und BDR|Designated Router und Backup im Multi-Access-Netz. Verteilen Updates, weniger Nachbarschaften.",
+"8a|OSPF: Routerrollen|Internal Router, Backbone Router, ABR (verbindet Areas, fasst zusammen), ASBR (Verbindung zu anderem AS)",
+"8a|Wildcard-Maske berechnen|255.255.255.255 minus Subnetzmaske. /24 = 0.0.0.255, /21 (255.255.248.0) = 0.0.7.255.",
+"8a|OSPF konfigurieren|router ospf 1, dann network 10.0.0.0 0.255.255.255 area 0",
+"8a|IGRP und EIGRP|IGRP: DV, classful, Update alle 90 s, max. 255 Hops. EIGRP: classless, Topologie-Datenbank, nur Änderungen, Hello 5 s/60 s, 5 Pakettypen.",
+// Kap 8b
+"8b|Firewall: Definition|Rechner mit mind. 2 Netzanschlüssen. Trennt vertrauenswürdiges von unsicherem Netz, prüft Pakete gegen einen Regelsatz (kann auch eine Router-ACL sein).",
+"8b|accept, deny/drop, reject|accept: weiterleiten. deny/drop: kommentarlos verwerfen. reject: verwerfen und Absender informieren.",
+"8b|Paketfilter|Prüft IP, Protokoll (TCP/UDP/ICMP), Ports, MAC. Schnell, einfach. Kein Content-Filter.",
+"8b|Application Gateway / Proxy|Layer 7, führt die Verbindung stellvertretend. Verbirgt interne Netze, gutes Logging, Inhaltsfilter, Cache. Langsam.",
+"8b|Stateful Inspection|Merkt sich Verbindungen, erlaubt nur Antworten darauf (dynamische Regeln). Findet eingeschmuggelte Pakete. Von Check Point entwickelt.",
+"8b|Firewall-Appliance|Hardware + Software aus einer Hand (Cisco PIX, Astaro). Frei: fli4l, IPCop.",
+"8b|Personal Firewall|Läuft auf dem zu schützenden PC, blockt unerwünschten ausgehenden Verkehr (Spyware). Ersetzt keinen Virenscanner.",
+"8b|DMZ: Voraussetzung und Zweck|Koppelkomponente mit mind. 3 Interfaces (WAN, LAN, DMZ). Server für beide Seiten stehen in der DMZ. ACLs: nichts direkt von außen ins LAN.",
+"8b|Exposed Host am SOHO-Router|Wird 'DMZ' genannt, ist aber ein LAN-Rechner direkt aus dem Internet erreichbar, im selben L2/IP-Netz. Keine echte DMZ.",
+"8b|ACL: first match und implicit deny|Erste passende Zeile gilt, Reihenfolge ist entscheidend. Am Ende unsichtbar 'deny any any': was nicht erlaubt ist, ist verboten.",
+"8b|Standard-ACL und Extended-ACL|Standard (Nr. 1-99): nur Quell-IP. Extended (100-199): Quelle, Ziel, Protokoll, Ports, Wildcard immer angeben.",
+"8b|Wildcard-Beispiele|172.16.128.0 0.0.0.255 = /24. 0.0.3.255 = /22. host x = 0.0.0.0. any = 0.0.0.0 255.255.255.255.",
+"8b|ACL ans Interface binden|Mit Richtung in oder out. Nur eine ACL je Protokoll und Richtung je Interface. Erst ACL erstellen, dann binden. show access-lists.",
+// Kap 9
+"9|Protokoll und Dienst|Protokoll = Regeln für den Datentransport. Dienst = Funktion, die ein Protokoll nutzt (WWW nutzt HTTP). Kein Dienst ohne Protokoll.",
+"9|NAT: Wozu?|Private Adressen werden im Internet nicht geroutet. Router übersetzt die private Quelle in eine öffentliche und die Antwort zurück.",
+"9|NAT: Vorteile und Nachteile|+ spart Adressen, Hosts schwer erreichbar. - Performance, keine echte Ende-zu-Ende-Verbindung, Tunneling komplexer.",
+"9|Static NAT / Dynamic NAT / PAT|Static: 1 privat zu 1 öffentlich, fest. Dynamic: x privat zu y öffentlich (Pool). PAT: viele private zu 1 öffentlichen, Unterscheidung per Port. PAT ist heute Standard (Heimrouter).",
+"9|Wie funktioniert PAT?|Router schreibt Quell-IP und Quellport um und speichert das in der NAT-Tabelle. Bei der Antwort ordnet er über den Port dem internen Rechner zu.",
+"9|NAT: Inside und Outside|Inside = eigenes privates Netz. Outside = fremdes, äußeres Netz."
+];
+var CARDS=RAW.map(function(r,i){var p=r.split("|");var c=p[0],f=p[1],b=p.slice(2).join("|");return {id:i,ch:c,q:f,a:b}}).filter(function(c){return c.a});
+
+var STORE="nwt_cards_v1", state={known:{},sel:{},only:false,order:null}, idx=0, flipped=false, list=[];
+function load(){try{var s=JSON.parse(localStorage.getItem(STORE)||"null");if(s){state.known=s.known||{};state.sel=s.sel||{};state.only=!!s.only}}catch(e){}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify({known:state.known,sel:state.sel,only:state.only}))}catch(e){}}
+load();
+var $=function(i){return document.getElementById(i)};
+var allSel=function(){return Object.keys(state.sel).length===0};
+
+function buildChips(){
+  var h='<button class="chip" data-ch="*" aria-pressed="'+allSel()+'">Alle ('+CARDS.length+')</button>';
+  Object.keys(CH).forEach(function(k){var n=CARDS.filter(function(c){return c.ch===k}).length;
+    h+='<button class="chip" data-ch="'+k+'" aria-pressed="'+(!!state.sel[k])+'">'+CH[k]+' ('+n+')</button>'});
+  $("chips").innerHTML=h;
+}
+$("chips").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  var k=b.getAttribute("data-ch");
+  if(k==="*")state.sel={};else{if(state.sel[k])delete state.sel[k];else state.sel[k]=1}
+  save();buildChips();rebuild(true)});
+$("onlyOpen").checked=state.only;
+$("onlyOpen").addEventListener("change",function(){state.only=this.checked;save();rebuild(true)});
+
+function rebuild(keepFirst){
+  var base=state.order||CARDS.map(function(c){return c.id});
+  list=base.map(function(i){return CARDS[i]}).filter(function(c){
+    return (allSel()||state.sel[c.ch])&&(!state.only||!state.known[c.id])});
+  if(keepFirst)idx=0;if(idx>=list.length)idx=0;flipped=false;render();
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function render(){
+  var scope=CARDS.filter(function(c){return allSel()||state.sel[c.ch]});
+  var k=scope.filter(function(c){return state.known[c.id]}).length;
+  $("stats").textContent=k+" / "+scope.length+" gewusst"+(list.length?" · Karte "+(idx+1)+" von "+list.length:"");
+  $("barFill").style.width=(scope.length?100*k/scope.length:0)+"%";
+  var sc=$("scene");
+  if(!list.length){sc.innerHTML='<div class="done"><strong>Keine offenen Karten.</strong><p class="sub">Schalte „nur offene Karten“ aus oder lösche den Fortschritt.</p></div>';$("btns").hidden=true;return}
+  $("btns").hidden=false;
+  var c=list[idx];
+  sc.innerHTML='<button class="card'+(flipped?' flipped':'')+'" id="card" type="button" aria-label="Karte umdrehen">'+
+    '<span class="face front"><span class="tag">'+CH[c.ch]+(state.known[c.id]?' · gewusst':'')+'</span><span class="txt">'+esc(c.q)+'</span><span class="hint">Antwort zeigen</span></span>'+
+    '<span class="face back"><span class="tag">Antwort</span><span class="txt">'+esc(c.a)+'</span></span></button>';
+  $("card").addEventListener("click",flip);
+}
+function flip(){flipped=!flipped;var c=$("card");if(c)c.classList.toggle("flipped",flipped)}
+function go(d){if(!list.length)return;idx=(idx+d+list.length)%list.length;flipped=false;render()}
+function mark(v){if(!list.length)return;var c=list[idx];if(v)state.known[c.id]=1;else delete state.known[c.id];save();
+  if(state.only&&v){list.splice(idx,1);if(idx>=list.length)idx=0;flipped=false;render()}else go(1)}
+$("known").addEventListener("click",function(){mark(true)});
+$("again").addEventListener("click",function(){mark(false)});
+$("shuffle").addEventListener("click",function(){var a=CARDS.map(function(c){return c.id});
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}
+  state.order=a;rebuild(true)});
+$("reset").addEventListener("click",function(){state.known={};save();rebuild(false)});
+document.addEventListener("keydown",function(e){
+  if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
+  if(e.key===" "||e.key==="Enter"){if(e.target&&e.target.tagName==="BUTTON"&&e.target.id!=="card")return;e.preventDefault();flip()}
+  else if(e.key==="ArrowRight")go(1);else if(e.key==="ArrowLeft")go(-1);
+  else if(e.key==="1")mark(false);else if(e.key==="2")mark(true)});
+buildChips();rebuild(true);
+</script>
+</body>
+</html>

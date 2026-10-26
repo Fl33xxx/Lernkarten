@@ -1,0 +1,1986 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Netzwerktechnik Lernblätter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --surface-2:#e8edf1; --fg:#14202b; --muted:#5a6b7a;
+  --line:#cfd8df; --accent:#0a6c74; --accent-fg:#ffffff; --good:#1f7a43; --bad:#b4372b;
+  --font-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f171e; --surface:#18232d; --surface-2:#223039; --fg:#e6edf2; --muted:#97a8b6;
+  --line:#2d3d49; --accent:#4cc3cc; --accent-fg:#06262a; --good:#5fcf8a; --bad:#ff8a7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f171e; --surface:#18232d; --surface-2:#223039; --fg:#e6edf2; --muted:#97a8b6;
+  --line:#2d3d49; --accent:#4cc3cc; --accent-fg:#06262a; --good:#5fcf8a; --bad:#ff8a7c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;padding:24px 16px 48px}
+main{max-width:860px;margin:0 auto}
+h1{font-size:1.7rem;text-wrap:balance;margin:0 0 8px}
+h2{font-size:1.3rem;margin:2.2em 0 .6em;padding-top:.6em;border-top:1px solid var(--line);text-wrap:balance}
+p,li{max-width:70ch}
+li{margin:.2em 0}
+strong{font-weight:600}
+nav a,a{color:var(--accent)}
+nav{margin:0 0 16px}
+.tw{overflow-x:auto;margin:.8em 0}
+table{border-collapse:collapse;font-size:.92rem;min-width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--surface-2)}
+tr:nth-child(even) td{background:var(--surface)}
+code{font-family:var(--font-mono);font-size:.9em}
+</style>
+</head>
+<body>
+<main>
+<h1>Netzwerktechnik – Übersicht &amp; Lernblätter</h1><nav><a href="karteikarten.html">Karteikarten →</a></nav>
+<p>Alles aus den 10 Präsentationen (Kap. 1–9) für den Test am Freitag, 30.10.2026: erst die Übersicht, dann ein Lernblatt pro Kapitel. Passende Karteikarten gibt es als eigene Seite.</p>
+<h2>Übersicht: die Kapitel auf einen Blick</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Kap.</th>
+<th>Thema</th>
+<th>Das musst du wissen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Einführung</td>
+<td>OSI-Modell (7 Schichten), TCP/IP-Modell, PDU/SDU, SAP, Normungsgremien (IEEE, IETF, ISO)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Infrastruktur</td>
+<td>Topologien, Leitungscodes, Twisted Pair, Kategorien/Klassen, LWL, WDM, strukturierte Verkabelung</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ethernet</td>
+<td>CSMA/CD, MAC-Adresse, Frameaufbau, Ethernet-Namen (100Base-TX), Autonegotiation, 1G/10G/40G/100G, PoE</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Bridge &amp; Switch</td>
+<td>Hub, Bridge, Switch, Switching-Modi, STP/RSTP, Link Aggregation, VLAN/Trunk, Pause-Frames, L3/L4-Switch</td>
+</tr>
+<tr>
+<td>5</td>
+<td>IPv4</td>
+<td>Adressklassen, private Adressen, CIDR/Subnetting, ARP, IP-Header, ICMP, DHCP</td>
+</tr>
+<tr>
+<td>6</td>
+<td>IPv6</td>
+<td>Header, Erweiterungsheader, IPsec, Adressarten, SLAAC, NDP/ICMPv6, Migration</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TCP/UDP</td>
+<td>Ports, 3-Wege-Handshake, TCP-Header und Flags, UDP, TCP vs. UDP</td>
+</tr>
+<tr>
+<td>8a</td>
+<td>Router</td>
+<td>Routing-Tabelle, statisch/dynamisch, RIP, OSPF, EIGRP</td>
+</tr>
+<tr>
+<td>8b</td>
+<td>Firewall</td>
+<td>Paketfilter, Proxy, Stateful, DMZ, ACLs</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Protokolle &amp; Dienste</td>
+<td>NAT (Static, Dynamic, PAT)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Lernplan bis Freitag</h2>
+<ol>
+<li>Montag: Kap. 1–3 (Grundlagen, Kabel, Ethernet)</li>
+<li>Dienstag: Kap. 4 (Switch, STP, VLAN)</li>
+<li>Mittwoch: Kap. 5–6 (IPv4 inkl. Subnetting üben, IPv6)</li>
+<li>Donnerstag: Kap. 7–9 (TCP/UDP, Router, Firewall, NAT)</li>
+<li>Freitag früh: nur Karteikarten und die Zahlen-Liste unten</li>
+</ol>
+<h2>Zahlen-Liste (auswendig)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Thema</th>
+<th>Wert</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet-Frame</td>
+<td>min. 64 Byte, max. 1518 Byte (mit VLAN-Tag 1522)</td>
+</tr>
+<tr>
+<td>Datenfeld</td>
+<td>46–1500 Byte</td>
+</tr>
+<tr>
+<td>MAC-Adresse</td>
+<td>48 Bit, 24 Bit Hersteller + 24 Bit laufende Nr.</td>
+</tr>
+<tr>
+<td>Twisted Pair max.</td>
+<td>100 m (Permanent Link 90 m)</td>
+</tr>
+<tr>
+<td>Optische Fenster</td>
+<td>850 nm, 1310 nm, 1550 nm</td>
+</tr>
+<tr>
+<td>IPv4 / IPv6 Adresse</td>
+<td>32 Bit / 128 Bit</td>
+</tr>
+<tr>
+<td>IPv4-Header / IPv6-Header</td>
+<td>min. 20 Byte / fest 40 Byte</td>
+</tr>
+<tr>
+<td>Private IPv4</td>
+<td>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</td>
+</tr>
+<tr>
+<td>APIPA</td>
+<td>169.254.0.0/16</td>
+</tr>
+<tr>
+<td>Protokollnummern</td>
+<td>ICMP 1, TCP 6, UDP 17</td>
+</tr>
+<tr>
+<td>Ports</td>
+<td>ftp 20/21, ssh 22, telnet 23, smtp 25, dns 53, tftp 69, http 80, pop3 110, ntp 123, imap 143, https 443</td>
+</tr>
+<tr>
+<td>Port-Bereiche</td>
+<td>0–1023 System, 1024–49151 User, 49152–65535 privat</td>
+</tr>
+<tr>
+<td>RIP</td>
+<td>max. 15 Hops, Update alle 30 s</td>
+</tr>
+<tr>
+<td>VLAN-ID</td>
+<td>12 Bit, 1–4094</td>
+</tr>
+<tr>
+<td>PoE</td>
+<td>48 V, max. 15,4 W (802.3af)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Lernblatt Kap. 1: Einführung</h2>
+<p><strong>Netzarten</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Netz</th>
+<th>Merkmal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BAN</td>
+<td>RFID, Reichweite bis ca. 1 m, auch Bluetooth</td>
+</tr>
+<tr>
+<td>PAN</td>
+<td>Heimnetz (SOHO), PCs, Drucker</td>
+</tr>
+<tr>
+<td>LAN</td>
+<td>Firmengelände: Ethernet, VLAN, WLAN</td>
+</tr>
+<tr>
+<td>MAN</td>
+<td>Städtenetz: LAN-Technik (EFM) oder WAN-Technik (ATM)</td>
+</tr>
+<tr>
+<td>WAN</td>
+<td>Netze der Carrier: POTS, ISDN, GSM, UMTS, IP, X.25, Frame Relay, Seekabel</td>
+</tr>
+<tr>
+<td>GAN / Internet</td>
+<td>Verbund aller Netze, auch Satellit</td>
+</tr>
+</tbody>
+</table></div>
+<p>Last Mile: xDSL, Funk (LTE, WLAN), TV-Kabel (CATV), EFM. Transporttechnik im WAN: ATM (Layer 2), SDH und OTN (Layer 1).</p>
+<p><strong>OSI-Modell</strong> (ISO, ab 1977 entwickelt, 1984 Standard ISO/IEC 7498-1)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Name</th>
+<th>Aufgabe</th>
+<th>Einheit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>Anwendung</td>
+<td>nimmt Datenübertragungsaufträge an</td>
+<td>Daten</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Darstellung</td>
+<td>alle verstehen die gleiche Sprache</td>
+<td>Daten</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Sitzung</td>
+<td>Sitzungen zwischen Partnern</td>
+<td>Daten</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Transport</td>
+<td>Nachrichten kommen vollständig beim Partner-Programm an</td>
+<td>Segment</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Vermittlung</td>
+<td>Pakete kommen im Zielsystem an</td>
+<td>Paket</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sicherung (2b LLC, 2a MAC)</td>
+<td>Frames unverfälscht zum nächsten Partner</td>
+<td>Frame</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Bitübertragung</td>
+<td>Bits zum direkt verbundenen Gerät</td>
+<td>Bits</td>
+</tr>
+</tbody>
+</table></div>
+<p>Eselsbrücke (1 bis 7): <strong>P</strong>lease <strong>D</strong>o <strong>N</strong>ot <strong>T</strong>hrow <strong>S</strong>ausage <strong>P</strong>izza <strong>A</strong>way.</p>
+<ul>
+<li>Layer 1–4 sind transportorientiert, 5–7 anwendungsorientiert. Der Kurs behandelt vor allem 1–4.</li>
+<li>Adressen im LAN: Layer 4 = Port, Layer 3 = IP-Adresse, Layer 2 = MAC-Adresse, Layer 1 = nur Physik (Stecker, Spannung, Wellenlänge).</li>
+<li>TCP/IP-Modell: Process/Anwendung (OSI 5–7), Transport (4), Internet (3), Network Access (1–2).</li>
+<li>Senden: Jede Schicht hängt einen Header an (AH, PH, SH, TH, NH, DH). Empfangen: Header werden der Reihe nach abgearbeitet und entfernt.</li>
+<li>PDU = Protocol Data Unit (Header + Daten einer Schicht). SDU = Service Data Unit (das, was von oben kommt). Die PDU der oberen Schicht ist die SDU der unteren.</li>
+<li>SAP (Service Access Point): Bitfolge, die das nächste eingebettete Protokoll adressiert. Beispiele: Port (L4), Protokoll-Feld (IP), Typ-Feld (Ethernet), SSAP/DSAP (LLC, z.B. 0x42 für STP).</li>
+</ul>
+<p><strong>Normungsgremien</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Gremium</th>
+<th>Wofür</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO / IEC / ITU-T</td>
+<td>international (ITU-T ist seit 1993 Nachfolger der CCITT)</td>
+</tr>
+<tr>
+<td>IEEE</td>
+<td>LAN-Standards (802.x)</td>
+</tr>
+<tr>
+<td>IETF, IAB, ISOC</td>
+<td>Internet (RFCs)</td>
+</tr>
+<tr>
+<td>ANSI, NIST, EIA, TIA</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>ETSI, ECMA, CENELEC</td>
+<td>Europa</td>
+</tr>
+<tr>
+<td>DIN, VDE, DKE</td>
+<td>Deutschland</td>
+</tr>
+</tbody>
+</table></div>
+<p>IEEE 802: 802.1 Bridging/VLAN, 802.2 LLC (aufgelöst), 802.3 Ethernet, 802.11 WLAN, 802.15 WPAN (Bluetooth, ZigBee). Großbuchstabe = eigener Standard (802.1Q), Kleinbuchstabe = Zusatz (802.1p). 802.3 nutzt nur Kleinbuchstaben (802.3ab, 802.3ae).</p>
+<p>RFC-Nummern: IP 791, ICMP 792, TCP 793, UDP 768, FTP 959, SMTP 821, DNS 1034/1035.</p>
+<h2>Lernblatt Kap. 2: Infrastruktur</h2>
+<p><strong>Topologien</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Topologie</th>
+<th>Vorteile</th>
+<th>Nachteile</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bus</td>
+<td>wenig Kabel, keine zentrale Komponente</td>
+<td>Shared Medium, jeder sieht alles, nur Halbduplex</td>
+<td>im LAN veraltet; Powerline, Kabel-TV, WLAN</td>
+</tr>
+<tr>
+<td>Ring</td>
+<td>(logisch) Token Ring 802.5</td>
+<td>veraltet</td>
+<td>im WAN: SDH-Ring mit Working/Protection Line</td>
+</tr>
+<tr>
+<td>Stern</td>
+<td>eigene Leitung pro Gerät, Wartung zentral, volle Bandbreite möglich</td>
+<td>viel Kabel, zentrale Komponente nötig</td>
+<td>LAN-Standard</td>
+</tr>
+<tr>
+<td>Baum</td>
+<td>Kombination aus Sternen</td>
+<td>–</td>
+<td>häufig</td>
+</tr>
+<tr>
+<td>Vermascht</td>
+<td>mehrere Wege, ausfallsicher</td>
+<td>im LAN nur ein aktiver Weg erlaubt (STP)</td>
+<td>WAN</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Signale und Dämpfung</strong></p>
+<ul>
+<li>Rechtecksignal = Summe aus Sinusschwingungen (Grundwelle + ungerade Oberwellen). Kabel dämpfen hohe Frequenzen stärker, das Signal wird "verschliffen".</li>
+<li>Dämpfung in dB: Spannung 20·lg(U1/U2), Leistung 10·lg(P1/P2). −3 dB ≈ 71 %, −6 dB = 50 %, −20 dB = 10 %, −40 dB = 1 % (Spannung).</li>
+<li>Basisband: digital, ganzes Spektrum, Zeitmultiplex (Ethernet). Breitband: analog, Frequenzmultiplex, große Distanzen (Kabel-TV).</li>
+</ul>
+<p><strong>Leitungscodes</strong> (Takt muss mit übertragen werden, wenig Gleichstrom, geringe Frequenz)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Einsatz</th>
+<th>Merkmal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manchester</td>
+<td>10BaseX</td>
+<td>Flankenwechsel in Bitmitte, Takt steckt im Signal; max. 10 MHz bei 10 Mbit/s</td>
+</tr>
+<tr>
+<td>MLT-3</td>
+<td>100BaseT</td>
+<td>3 Zustände (+1, 0, −1); max. 31,25 MHz bei 125 Mbit/s (vorher 4B/5B)</td>
+</tr>
+<tr>
+<td>PAM-5</td>
+<td>1000BaseT</td>
+<td>5 Pegel, 4 für Daten (2 Bit je Pegel); 4 Paare je 250 Mbit/s; max. 62,5 MHz</td>
+</tr>
+<tr>
+<td>AMI</td>
+<td>ISDN</td>
+<td>pseudoternär</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Kupferkabel</strong></p>
+<ul>
+<li>Koax (nicht mehr im LAN): 10Base5 = RG-11, gelb, dick, 50 Ω. 10Base2 = RG-58, dünn, 50 Ω ("Cheapernet"). Kabel-TV: 75 Ω, bis 400 Mbit/s.</li>
+<li>Twisted Pair: 2 oder 4 Paare (2 Paare bei Industrial Ethernet). Verdrillung löscht Störungen aus und verringert Übersprechen.</li>
+<li>Schirmung nach ISO/IEC 11801: XX/Y-TP, XX = Gesamtschirm, Y = Aderschirm. U = ungeschirmt, F = Folie, S = Geflecht, SF = Geflecht + Folie. Beispiele: U/UTP, S/FTP, F/FTP. PiMF = Paar in Metallfolie.</li>
+<li>Kabelbezeichnung I-02YSCY 4x2x0,6 PiMF: Innenraum, Foam-Skin-PE-Isolation, Kupfergeflecht-Schirm, PVC-Mantel, 4 Paare, 0,6 mm, Paare einzeln in Folie.</li>
+</ul>
+<p><strong>Kategorien und Klassen</strong></p>
+<ul>
+<li>Kategorie = Eigenschaft von Kabel, Stecker, Patchfeld. Klasse = Eigenschaft der ganzen Strecke (Link).</li>
+<li>Cat 3: 16 MHz (10BaseT). Cat 5e: 100 MHz (Gigabit). Cat 6: 250 MHz. Cat 6A: 500 MHz (10GBase-T 100 m). Cat 7: 600 MHz. Cat 7A: 1000 MHz. Cat 8: 2000 MHz (25/40 Gbit/s, 30 m).</li>
+<li>Klassen: D bis 100 MHz, E bis 250 MHz, F bis 600 MHz.</li>
+<li>Normen: ISO/IEC 11801, EN 50173 (strukturierte Verkabelung), EN 50174 (Installation).</li>
+</ul>
+<p><strong>Stecker und Kabel</strong></p>
+<ul>
+<li>RJ-45, 8 Adern. 10/100BaseT nutzen Pin 1,2 und 3,6. 1000BaseT nutzt alle 4 Paare. ISDN und Token Ring nutzen 4,5 und 3,6.</li>
+<li>Farbcodes EIA/TIA 568A und 568B (Paar 2 und 3 vertauscht). Wichtig: auf einen Standard festlegen.</li>
+<li>Patchkabel 1:1 (gerade). Crossover (gedreht): Sender des einen an Empfänger des anderen. Heute meist unnötig durch Auto-MDI/MDIX.</li>
+<li>Cat 7: GG45 oder TERA (rückwärtskompatibel zu RJ-45, weniger Übersprechen).</li>
+<li>Auflegen am Patchpanel: Schirm großflächig auflegen (Skineffekt), Verdrillung möglichst lassen (sonst Impedanzänderung, Reflexionen). Technik: LSA (löt-, schraub-, abisolierfrei).</li>
+</ul>
+<p><strong>Messen</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Wert</th>
+<th>Bedeutung</th>
+<th>Besser ist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Attenuation</td>
+<td>Dämpfung</td>
+<td>kleiner</td>
+</tr>
+<tr>
+<td>NEXT / FEXT</td>
+<td>Übersprechen am nahen / fernen Ende</td>
+<td>größer</td>
+</tr>
+<tr>
+<td>PSNEXT / PSFEXT</td>
+<td>Powersum, alle Paare zusammen</td>
+<td>größer</td>
+</tr>
+<tr>
+<td>ELFEXT</td>
+<td>Equal Level FEXT</td>
+<td>größer</td>
+</tr>
+<tr>
+<td>Return Loss</td>
+<td>Rückflussdämpfung (Reflexion an Knicken, Steckern, Impedanzsprüngen)</td>
+<td>größer</td>
+</tr>
+<tr>
+<td>ACR</td>
+<td>NEXT minus Dämpfung = Störabstand</td>
+<td>größer</td>
+</tr>
+<tr>
+<td>Alien Crosstalk</td>
+<td>Übersprechen zwischen Kabeln im Bündel</td>
+<td>als Dämpfung gemessen: größer</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Permanent Link = 90 m (fest verlegtes Tertiärkabel). Channel Link = 100 m (plus Anschlusskabel 2x5 m).</li>
+<li>Messprotokoll: Aufbau, Durchführung/Geräte, Normen, Messwerte, Ergebnis, Prüfer, Datum, Unterschrift.</li>
+</ul>
+<p><strong>Lichtwellenleiter (LWL)</strong></p>
+<ul>
+<li>Optische Fenster: 850 nm (LED, billig, kurze Reichweite), 1310 nm und 1550 nm (Laser, weiter, teurer).</li>
+<li>Singlemode (SMF): Kern 5–10 µm (9/125), nur ein Strahl, keine Dispersion, 80–100 km, Laser. Multimode (MMF): Kern 50 oder 62,5 µm, Stufenindex oder Gradientenindex. Dispersion = Laufzeitunterschied der Strahlen, Gradientenindex verringert sie.</li>
+<li>Vorteile: große Reichweite, hohe Leistung, leicht, störfest, abhörsicher, galvanische Trennung. Nachteile: Stecker teurer, Reparatur aufwändig.</li>
+<li>Kategorien: OM1–OM5 (Multimode), OS1/OS2 (Singlemode). OM5 ist für Wellenlängenmultiplex.</li>
+<li>Stecker: SC (einziger in EN 50173), LC (klein, für SFP), ST, MIC (FDDI), MT-RJ. PC = Physical Contact (gerader, leicht gewölbter Schliff). APC = Angled Physical Contact (Schrägschliff, grün, bessere Rückflussdämpfung). Stecker sauber halten.</li>
+<li>Module: SFP bis 1G, SFP+ 10G, SFP28 25G, QSFP+ 40G, QSFP28 100G.</li>
+<li>Verbinden: Fusionsspleiss (Lichtbogen), sehr dämpfungsarm, Gerät ca. 10.000 €. Pigtails (Faser mit Stecker) werden angespleisst. Spleissbox = Patchfeld für LWL.</li>
+<li>Laser ist unsichtbar (Infrarot): nie in die Lichtquelle sehen.</li>
+<li>WDM = mehrere Wellenlängen gleichzeitig auf einer Faser (nicht mit Multimode verwechseln!). DWDM: sehr enger Abstand (0,4–1,6 nm), teuer, C-/L-Band. CWDM: 20 nm Abstand, 18 Kanäle (1311–1611 nm), günstiger, bis 10 Gbit/s je Kanal, bis 70 km, für MAN.</li>
+</ul>
+<p><strong>Strukturierte Verkabelung (EN 50173)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Ebene</th>
+<th>Verbindet</th>
+<th>Medium</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primär (Gelände)</td>
+<td>Standortverteiler (SV) → Gebäudeverteiler (GV)</td>
+<td>LWL</td>
+</tr>
+<tr>
+<td>Sekundär (Gebäude)</td>
+<td>GV → Etagenverteiler (EV)</td>
+<td>LWL oder TP</td>
+</tr>
+<tr>
+<td>Tertiär (Etage)</td>
+<td>EV → Teilnehmeranschluss (TA), max. 90 m</td>
+<td>TP oder LWL</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Primär + Sekundär = Backbone (Core). Etage = Distribution. Tertiär = Access.</li>
+<li>Anwendungsneutral: gleiche Verkabelung für alle Dienste, zukunftssicher. Geräte gehören nicht zur Verkabelung.</li>
+<li>Teile der EN 50173: 1 allgemein, 2 Büro, 3 Industrie, 4 Wohnung, 5 Rechenzentrum, 6 verteilte Gebäudedienste.</li>
+<li>Sicherheit auf "Layer 0": nicht benötigte Ports nicht patchen. Störungen oft durch schlechte Erdung (EMV).</li>
+</ul>
+<h2>Lernblatt Kap. 3: Ethernet</h2>
+<p><strong>Geschichte und Einsatz</strong></p>
+<ul>
+<li>Ethernet kommt von Xerox (Metcalfe, 1976). DIX = Digital, Intel, Xerox. Zugriff: CSMA/CD.</li>
+<li>Speeds: E = 10 Mbit/s, FE = 100, GE = 1000, 10GE = 10 Gbit/s (Standard 2002), 40/100GE (Juni 2010), 25G (2016), 2,5/5G (Sept. 2016), 200/400G (Dez. 2017).</li>
+<li>Einsatz: Access = FE/GE, Distribution = GE/10GE, Core = 10GE bis 100GE. WAN = Router nach außen.</li>
+</ul>
+<p><strong>CSMA/CD</strong> (Carrier Sense, Multiple Access, Collision Detection; nur im Halbduplex)</p>
+<ul>
+<li>Carrier Sense: Station hört erst ins Medium. Frei? Dann senden.</li>
+<li>Multiple Access: alle teilen sich ein Medium (Shared Medium).</li>
+<li>Collision Detection: Station hört beim Senden mit. Kollision? Sendet Jam-Signal, bricht ab, wartet eine Zufallszeit (Backoff) und sendet neu.</li>
+<li>Deshalb Mindestlänge 64 Byte: Die Kollision muss noch während des Sendens erkannt werden. Daher auch Ausdehnungsgrenzen (4-Repeater-Regel).</li>
+<li>Vollduplex braucht kein CSMA/CD mehr (Switch, nur 2 Partner).</li>
+</ul>
+<p><strong>MAC-Adresse</strong> (48 Bit = 6 Byte, hex)</p>
+<ul>
+<li>Erste 24 Bit = Herstellercode (OUI, von IEEE vergeben). Letzte 24 Bit = laufende Nummer.</li>
+<li>I/G-Bit (erstes Bit): 0 = Individualadresse, 1 = Gruppenadresse.</li>
+<li>U/L-Bit (zweites Bit): 0 = global (Standard), 1 = lokal administriert.</li>
+<li>Broadcast: FF-FF-FF-FF-FF-FF (alle Bits 1).</li>
+<li>Multicast: Spanning Tree 01-80-C2-00-00-00. Pause-Frames 01-80-C2-00-00-01. Internet-Multicast 01-00-5E-xx-xx-xx.</li>
+<li>Hersteller-Beispiele: Cisco 00-00-0C, HP 08-00-09, Intel 00-00-0E, 3com 02-60-8C.</li>
+<li>Source Address ist immer Unicast.</li>
+</ul>
+<p><strong>Frame-Aufbau</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Größe</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Präambel</td>
+<td>7 Byte (1010…)</td>
+<td>Bit-Synchronisation</td>
+</tr>
+<tr>
+<td>SFD</td>
+<td>1 Byte (10101011)</td>
+<td>Start Frame Delimiter, Frame-Beginn</td>
+</tr>
+<tr>
+<td>DA</td>
+<td>6 Byte</td>
+<td>Zieladresse</td>
+</tr>
+<tr>
+<td>SA</td>
+<td>6 Byte</td>
+<td>Quelladresse</td>
+</tr>
+<tr>
+<td>Länge/Typ</td>
+<td>2 Byte</td>
+<td>siehe unten</td>
+</tr>
+<tr>
+<td>Daten</td>
+<td>46–1500 Byte</td>
+<td>bei Bedarf mit Padding auf 46 aufgefüllt</td>
+</tr>
+<tr>
+<td>FCS</td>
+<td>4 Byte</td>
+<td>CRC32-Prüfsumme über Header und Daten</td>
+</tr>
+<tr>
+<td>IFG</td>
+<td>96 Bit</td>
+<td>Inter Frame Gap, Sendepause zur Abgrenzung</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Frame ohne Präambel: min. 64 Byte, max. 1518 Byte. Mit VLAN-Tag (802.3ac): max. 1522 Byte.</li>
+<li>Länge/Typ: Wert ≤ 1500 = Länge (IEEE 802.3, dann folgt LLC). Wert &gt; 1500 (&gt; 0x05DC) = Typ (DIX V2 / Ethernet II). IPv4 = 0x0800, IPv6 = 0x86DD, ARP = 0x0806, VLAN-Tag = 0x8100, Pause = 0x8808.</li>
+<li>Falsche FCS → Frame wird verworfen. Wiederholung macht eine höhere Schicht (TCP). Ethernet selbst ist verbindungslos.</li>
+<li>LLC (802.2): DSAP + SSAP je 1 Byte + Control 1 Byte (0x03 = unnummeriert). 3 Byte insgesamt.</li>
+<li>SNAP: DSAP und SSAP immer 0xAA, Control 0x03, dazu 5 Byte (3 Byte OUI + 2 Byte Protokoll). Mit LLC + SNAP gehen 8 Byte vom Datenfeld ab: 38–1492 Byte. Deshalb nutzen die meisten Ethernet II.</li>
+<li>Tagged Frame (802.1Q): 4 Byte nach der Quelladresse (TPID 0x8100, PCP 3 Bit, DEI 1 Bit, VLAN-ID 12 Bit).</li>
+<li>Gigabit Half Duplex: Carrier Extension, Mindestlänge 512 Byte (Kollisionsdomäne wäre sonst zu klein).</li>
+<li>Jumbo Frames: bis ca. 9000 Byte Nutzdaten (in der Folie 9.014), weniger Overhead.</li>
+</ul>
+<p><strong>Bezeichnungen</strong> (Schema: Speed + Base/Broad + Typ)</p>
+<ul>
+<li>Beispiel 100BASE-TX: 100 Mbit/s, Basisband, Twisted Pair, X = Vollduplex-Variante.</li>
+<li>Beispiel 10GBASE-SW: 10 Gbit/s, Basisband, S = Short Wavelength (850 nm), W = WAN-PHY (64b/66b, SONET/SDH).</li>
+<li>Base = Basisband. Broad = Breitband (nicht im LAN, 10Broad36).</li>
+<li>Segment: -2 = Cheapernet, RG58, 185 m (≈ 200 m). -5 = RG11 Yellow Cable, 500 m. -T = Twisted Pair, 100 m. -F = Fiber (FL bis ca. 1 km, FB Backbone, FP passiv). -C = Twinax, 150 Ω.</li>
+<li>Wellenlänge: S = 850 nm, L = 1310 nm, E = 1550 nm (Singlemode bis 40 km).</li>
+<li>10G-Zusätze: R = 64b/66b LAN, X = 8b/10b LAN, W = 64b/66b WAN, 4 = 4 Wellenlängen. K = Backplane, C = Twinax, T = Twisted Pair.</li>
+</ul>
+<p><strong>Gigabit Ethernet</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Reichweite</th>
+<th>Codierung</th>
+<th>Medium</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000BASE-LX</td>
+<td>5000 m SMF, 550 m MMF</td>
+<td>8B/10B</td>
+<td>1270–1355 nm</td>
+</tr>
+<tr>
+<td>1000BASE-SX</td>
+<td>550 m (50 µm), 275 m (62,5 µm)</td>
+<td>8B/10B</td>
+<td>770–860 nm</td>
+</tr>
+<tr>
+<td>1000BASE-T</td>
+<td>100 m</td>
+<td>PAM-5</td>
+<td>UTP Cat 5e, 4 Paare</td>
+</tr>
+<tr>
+<td>1000BASE-CX</td>
+<td>25 m</td>
+<td>8B/10B</td>
+<td>Twinax</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>1000BASE-T: alle 4 Paare, in beide Richtungen gleichzeitig (Vollduplex). 4 Transceiver, PAM-5 (5 Pegel, 4 für je 2 Bit), 125 Megasymbole/s je Paar, Schwerpunktfrequenz 62,5 MHz. Trellis-Code und Scrambling. Echo-Kompensation trennt gesendetes von empfangenem Signal. Hybride = richtungsgebende Kopplung. Kabel Cat 5e mit PS-NEXT-Vorgaben.</li>
+<li>Standards: 802.3z (LWL, CX), 802.3ab (1000BASE-T), 802.3ap (Backplane KX).</li>
+</ul>
+<p><strong>Autonegotiation (ANP)</strong></p>
+<ul>
+<li>Zweck: Fast Ethernet kompatibel zu 10BaseT machen. Von National Semiconductor (Nway), IEEE 802.3u.</li>
+<li>Aushandelt: Geschwindigkeit, Duplex, MDI/MDI-X, Master/Slave (nur GE), DSP-Filter für Echo-Kompensation (nur GE).</li>
+<li>NLP (Normal Link Pulse): alle 16 ± 8 ms, überwacht den Link (10BaseT).</li>
+<li>FLP (Fast Link Pulse): Burst aus 33 Pulsen. 17 ungerade = Takt, 16 gerade = 16-Bit Link Code Word (LCW). Zeitlich wie NLP, deshalb erkennen 10BaseT-Geräte es als NLP.</li>
+<li>Priorität (1 = höchste): 1000T FDX, 1000T HDX, 100T2 FDX, 100TX FDX, 100T2 HDX, 100T4, 100TX HDX, 10T FDX, 10T HDX.</li>
+<li>Parallel Detection: Partner antwortet nicht auf FLP → Standard wird am Signal erkannt, aber immer Halbduplex.</li>
+<li>Duplex-Mismatch (eine Seite fest Vollduplex, andere Auto → Halbduplex) = extrem langsam. In bekannter Umgebung lieber fest konfigurieren.</li>
+<li>Bei GE Pflicht. Bei LWL gibt es kein Autonegotiation. Gigabit nutzt Next Page (Bit 15 im LCW).</li>
+<li>Aushandlung findet im Reconciliation Sublayer (Layer 1) statt.</li>
+</ul>
+<p><strong>10 Gigabit Ethernet (802.3ae)</strong></p>
+<ul>
+<li>Nur Vollduplex, kein CSMA/CD. Frame-Format und Frame-Längen wie 802.3. Link Aggregation unterstützt.</li>
+<li>Zwei PHYs: LAN-PHY (genau 10 Gbit/s) und WAN-PHY (SONET OC-192 / SDH VC-4-64c, 9,95328 Gbit/s brutto, 9,58464 Gbit/s Nutzdaten).</li>
+<li>Reichweiten: 100 m (62,5 µm MMF), 300 m (50 µm MMF), 2 km / 10 km / 40 km (SMF), 30 m Cat 6, 100 m Cat 7 (10GBASE-T).</li>
+<li>Einsatz: HPC-Cluster, SAN, Server, Backbone. Sollte ATM/SONET/SDH im WAN ablösen.</li>
+</ul>
+<p><strong>40/100 Gigabit Ethernet (802.3ba, Juni 2010)</strong></p>
+<ul>
+<li>Erster Standard mit zwei Geschwindigkeiten. Bis 40 km ausgelegt.</li>
+<li>40GBASE-SR4: 4 OM3-Fasern, 100 m. 40GBASE-LR4: 1 OS2-Faser, 4 Farben (CWDM), 10 km. 40GBASE-T: Cat 8, 30 m. -CR4: Twinax, 7 m. -KR4: Backplane.</li>
+<li>100GBASE-SR10: 10 OM3-Fasern, 100 m. 100GBASE-SR4: 4 OM4-Fasern (802.3bm). -LR4: 10 km. -ER4: 40 km.</li>
+<li>Modul: QSFP+ (40G).</li>
+</ul>
+<p><strong>Power over Ethernet (PoE)</strong> (802.3af / at / bt, auch DTE Power via MDI, PoL, Active Ethernet)</p>
+<ul>
+<li>Strom übers Netzwerkkabel für IP-Telefon, Webcam, Access Point.</li>
+<li>Elektrisch: 48 V DC (am PSE 44–57 V, am PD 37–57 V). Dauerstrom 350 mA (500 mA für 100 ms). 100 m. Kat 3–5.</li>
+<li>802.3af: 15,4 W am PSE, 12,95 W am PD. Klassen: 0 = 15,4 W (default), 1 = 4,0 W, 2 = 7,0 W, 3 = 15,4 W. 802.3at/bt: mehr (bt bis 70 W).</li>
+<li>PSE = Power Sourcing Equipment (Einspeiser). PD = Powered Device (Verbraucher).</li>
+<li>Einspeisung: Endpoint-PSE (Switch mit PoE) oder Midspan-PSE (Patchpanel dazwischen).</li>
+<li>Variante A: Phantomspeisung über die Datenadern. Variante B: freie Adernpaare (nicht bei GE möglich).</li>
+<li>Sicherheit: PSE schickt vorher kurze Teststromimpulse. Erst wenn er den PoE-typischen Widerstand sieht, schaltet er durch. Kabel ab → Strom sofort aus.</li>
+</ul>
+<p><strong>Industrial Ethernet, PROFINET, EEE (802.3az)</strong></p>
+<ul>
+<li>Hinweis: Die Folien dazu fehlen in den PDFs. Nur Stichworte aus dem Inhaltsverzeichnis: Industrial Ethernet (robuste Stecker, oft nur 2 Paare), PROFINET (Echtzeit-Ethernet mit Zykluszeit), Energy Efficient Ethernet 802.3az (Geräte schalten bei Leerlauf in Low-Power-Idle).</li>
+</ul>
+<h2>Lernblatt Kap. 4: Layer 1 und 2 (Hub, Bridge, Switch, STP, VLAN)</h2>
+<p><strong>Koppelkomponenten nach Schicht</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Schicht</th>
+<th>Gerät</th>
+<th>Liest / macht</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Repeater, Hub</td>
+<td>Bits regenerieren, kein Frame-Verständnis</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bridge, Switch</td>
+<td>MAC-Adresse</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Router, L3-Switch</td>
+<td>IP-Adresse</td>
+</tr>
+<tr>
+<td>4</td>
+<td>L4-Switch</td>
+<td>TCP/UDP-Port</td>
+</tr>
+<tr>
+<td>5–7</td>
+<td>Gateway, L4–7-Switch</td>
+<td>Anwendungsdaten, Protokollumsetzung</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Hub kann das Medium ändern (z.B. TP auf LWL), da er nur Signale umsetzt.</li>
+<li>Switch kann Layer-2-Protokolle ändern nur als Translation Bridge (z.B. WLAN auf Ethernet).</li>
+<li>Router entfernt L2-Header und baut einen neuen auf. Er trennt Broadcast-Domänen.</li>
+<li>Alle Header ab der Schicht der Komponente werden gelesen. Darunter liegende Header werden neu erzeugt.</li>
+</ul>
+<p><strong>Hub</strong> (Multiport-Repeater, Layer 1, veraltet)</p>
+<ul>
+<li>Leitet jedes Bit an alle Ports. Immer nur ein Frame gleichzeitig. Shared Medium, Halbduplex, CSMA/CD.</li>
+<li>Alle Ports gleiche Geschwindigkeit. Max. 4 Hubs im längsten Pfad.</li>
+<li>Alle Endgeräte sehen alle Daten (Sniffen ist leicht).</li>
+<li>Geschwindigkeits-Mix (Dualspeed-Hub): intern wird nach 10 und 100 Mbit/s getrennt, dazwischen sitzt eine Bridge.</li>
+</ul>
+<p><strong>Kabel gekreuzt oder nicht?</strong></p>
+<ul>
+<li>Was einer sendet, muss der andere empfangen. Zwischen 2 Endgeräten muss effektiv genau eine Kreuzung bleiben (Gesamtzahl ungerade).</li>
+<li>Endgerät zu Hub/Switch: 1:1-Kabel. Endgerät zu Endgerät oder Hub zu Hub: Crossover.</li>
+<li>Auto-MDI/MDIX nimmt das ab. Bei Gigabit ist es im Standard definiert. Viele Fehler liegen an Kabel und Ports, nicht an der Konfiguration.</li>
+</ul>
+<p><strong>Bridge und Switch</strong></p>
+<ul>
+<li>Bridge = 2 Ports, verbindet Kollisionsdomänen über Layer 2. Switch = Multiport-Bridge. "Switch" war ursprünglich ein Marketingbegriff (IEEE kennt nur Bridge).</li>
+<li>Self Learning: Bridge/Switch lernt die Quell-MAC jedes Frames mit dem Eingangsport (SAT = Source Address Table, auch MAC-Tabelle). Tabelle wird regelmäßig gelöscht (Aging).</li>
+<li>Ziel bekannt → nur an diesen Port. Ziel unbekannt, Multicast, Broadcast → an alle Ports außer Eingangsport (Flooding).</li>
+<li>Pro Port eine eigene Kollisionsdomäne. Bei Vollduplex keine Kollisionen mehr, keine 4-Repeater-Regel, Switches frei kaskadierbar.</li>
+<li>Alle Ports eines Switches (ohne VLAN) = eine Broadcast-Domäne. Router oder VLANs trennen Broadcast-Domänen.</li>
+<li>Filtert lokalen Verkehr, isoliert defekte Segmente, besser für Datenschutz (Daten gehen nur zum Zielport).</li>
+<li>Translation Bridge koppelt verschiedene LAN-Typen (heute: WLAN an Ethernet, ADSL-Modem: ATM auf Ethernet).</li>
+<li>Zielport besetzt: Switch puffert (heute üblich). Ältere Geräte erzeugen ein Kollisionssignal. Moderne bremsen den Sender mit PAUSE-Frames.</li>
+<li>Switch-Parameter: Portzahl und Speed, Adressspeicher, Durchsatz (Frames/s), blockierungsfrei (Ports × Speed ≤ Backplane), STP, VLAN, Trunking, Priorisierung, Management (SNMP, RMON, SSH), Port-Authentifizierung 802.1x.</li>
+</ul>
+<p><strong>Switch-Arbeitsweisen</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Verfahren</th>
+<th>Liest</th>
+<th>Verzögerung</th>
+<th>Fehlerprüfung</th>
+<th>Besonderheit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Store &amp; Forward</td>
+<td>ganzen Frame (Puffer 1518/1522 Byte)</td>
+<td>ca. 100 µs</td>
+<td>ja, FCS</td>
+<td>auch verschiedene Port-Speeds möglich</td>
+</tr>
+<tr>
+<td>Cut Through</td>
+<td>erste 6 Byte (bis DA)</td>
+<td>unter 10 µs</td>
+<td>keine</td>
+<td>leitet Runts und CRC-Fehler weiter, gleiche Port-Speeds nötig</td>
+</tr>
+<tr>
+<td>Fragment Free</td>
+<td>erste 64 Byte</td>
+<td>ca. 60 µs</td>
+<td>nur Runts (Kollisionsfragmente)</td>
+<td>Cisco, wenig verbreitet</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Adaptiv: Modern → Cut Through, bei vielen Fehlern automatisch Store &amp; Forward.</li>
+<li>Runt = zu kurzer Frame (unter 64 Byte).</li>
+</ul>
+<p><strong>Spanning Tree Protocol (STP, 802.1D)</strong></p>
+<ul>
+<li>Problem: Redundante Wege (Schleifen) in einem Layer-2-Netz. Broadcasts kreisen endlos (Broadcast-Sturm), MAC-Tabellen lernen dauernd um. Ein einziges Paket reicht, das Netz steht.</li>
+<li>STP blockiert gezielt Ports, sodass ein schleifenfreier Baum entsteht. Alle Geräte bleiben erreichbar. Bei Ausfall wird ein blockierter Weg aktiviert.</li>
+<li>Ablauf: 1) Root-Bridge wählen (niedrigste Bridge-ID = Priorität + MAC; Standard-Prio 32768). 2) Auf jeder anderen Bridge den Root-Port bestimmen (günstigster Pfad zur Root). 3) Pro Segment einen Designated Port (günstigster Pfad zur Root). 4) Alle übrigen Ports blockieren.</li>
+<li>BPDUs (Hello) tauschen die Infos aus. Multicast-Adresse 01-80-C2-00-00-00.</li>
+<li>Pfadkosten (Folie): 100 Mbit/s = 200.000, 1 Gbit/s = 20.000 (neuere Kostenskala). Niedriger ist besser.</li>
+<li>Priorität nur in Vielfachen von 4096 einstellbar (unteren 12 Bit für MSTP reserviert).</li>
+<li>Port-Status STP: Root-Switch: alle Ports Forwarding. Root-Ports: Forwarding. Designated Ports: Forwarding. Alle anderen: Blocking.</li>
+<li>STP-Zustandsfolge: Blocking → Listening → Learning → Forwarding (Disabled bei ausgeschaltet).</li>
+</ul>
+<p><strong>STP und RSTP (802.1w)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>STP</th>
+<th>RSTP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Steuerung</td>
+<td>Timer</td>
+<td>Ereignis</td>
+</tr>
+<tr>
+<td>Reaktion</td>
+<td>langsam</td>
+<td>schnell (Sekunden)</td>
+</tr>
+<tr>
+<td>Zustände</td>
+<td>Disabled, Blocking, Listening, Learning, Forwarding</td>
+<td>Discarding, Learning, Forwarding</td>
+</tr>
+<tr>
+<td>Port-Rollen</td>
+<td>Root, Designated</td>
+<td>zusätzlich Alternate (Ersatz für Root-Port) und Backup (Ersatz für Designated)</td>
+</tr>
+<tr>
+<td>Edge-Port</td>
+<td>nein</td>
+<td>ja</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>RSTP ist abwärtskompatibel. 2003 wurde STP im Standard 802.1D durch RSTP ersetzt.</li>
+<li>Edge-Port (bei Herstellern oft "Fastforwarding" oder "PortFast"): geht direkt in Forwarding. Nur für Endgeräte, nicht für Switch-zu-Switch. Sieht der Port mehr als eine MAC, wird er wieder normal.</li>
+<li>MSTP (Multiple Spanning Tree): mehrere Bäume für verschiedene VLANs. Ursprünglich 802.1s, seit 2005 in 802.1Q.</li>
+</ul>
+<p><strong>Link Aggregation</strong> (802.3ad, seit 2008 802.1AX; Cisco: EtherChannel; auch Multilink Trunking)</p>
+<ul>
+<li>Bis zu 8 physische Links werden zu einem logischen Link gebündelt. Mehr Bandbreite (Lastverteilung) und Redundanz.</li>
+<li>Statisch: Konfiguration einmalig auf beiden Seiten, keine Überwachung.</li>
+<li>LACP (Link Aggregation Control Protocol, 802.3ad): IEEE-Standard. Modi active (startet die Aushandlung) und passive (wartet).</li>
+<li>LACP-Vorteile: Erkennt Ausfall auch hinter einem Medienkonverter (Link bleibt "up", aber keine LACPDUs). Beide Seiten bestätigen sich die Konfiguration.</li>
+<li>PAgP (Folie: LAgP): Cisco-Protokoll. Modi desirable (aktiv) und auto (passiv).</li>
+<li>Einrichten: Ports zur Channel-Group, virtuelle Schnittstelle konfigurieren, diagnostizieren.</li>
+</ul>
+<p><strong>VLAN</strong> (802.1Q)</p>
+<ul>
+<li>Trennt logische und physische Struktur. Ein Switch wird in mehrere virtuelle Switches geteilt.</li>
+<li>Vorteile: höhere Sicherheit, kleinere Broadcast-Last, flexible Größen. Endgeräte merken nichts.</li>
+<li>Kein Verkehr zwischen VLANs ohne Router (oder L3-Switch).</li>
+<li>Trunk-Port: tagged. Frames tragen das VLAN-Tag. Es kann kein normales Endgerät dran. Access-Port: untagged. VLAN-IDs müssen auf beiden Seiten gleich sein.</li>
+<li>802.1Q-Tag (4 Byte): TPID 0x8100 (2 Byte). TCI (2 Byte): PCP 3 Bit (Priorität 0–7, 802.1p), DEI 1 Bit (früher CFI), VID 12 Bit.</li>
+<li>VLAN-IDs: 1–4094 nutzbar (0 = nur Prio, kein VLAN; 4095 reserviert). VLAN 1 = Default und oft Management.</li>
+<li>Frame wird um 4 Byte länger: 1522 Byte (802.3ac, 1998).</li>
+<li>802.1p-Prio (PCP 0–7): BK Background, BE Best Effort (0, default), EE Excellent Effort, CA Critical Applications, VI Video (&lt; 100 ms), VO Voice (&lt; 10 ms), IC Internetwork Control, NC Network Control.</li>
+<li>VLAN und IP-Netz sind unabhängig (Layer 2 vs. 3). Sinnvoll: ein VLAN = ein IP-Netz. Dann koppelt ein Router per ACL.</li>
+<li>Mirror-Port: Switch kopiert Verkehr an einen Port für den Sniffer.</li>
+</ul>
+<p><strong>Flusssteuerung 802.3x</strong> (PAUSE-Frame, nur Vollduplex)</p>
+<ul>
+<li>Droht der Empfangspuffer überzulaufen, schickt der Empfänger ein PAUSE-Frame an den Sender.</li>
+<li>Ziel-MAC 01-80-C2-00-00-01 (Switches leiten es nicht weiter). Typ 0x8808 (MAC Control). Opcode 0x0001. Parameter = Pausenzeit in Vielfachen von 512 Bit-Zeiten. 42 Byte Padding (0x00).</li>
+<li>Pausenzeit 0 = sofort wieder senden. Neues PAUSE überschreibt das alte. Kann einseitig oder in beide Richtungen laufen. Ausgehandelt per Autonegotiation.</li>
+</ul>
+<p><strong>L3-, L4-, L4–7-Switching</strong></p>
+<ul>
+<li>L3-Switch: Router im Switch (Hard- oder Software). Jedes VLAN bekommt eine IP-Adresse (Interface VLAN) und ist Default Gateway für seine Geräte. Beispiel: interface vlan47 mit 10.0.0.1/8.</li>
+<li>L4-Switch: liest bis zum TCP/UDP-Port. Leitet nach Anwendung (WWW, FTP, Mail) an den richtigen Server, unabhängig von MAC.</li>
+<li>L4–7 (Load Balancing): Nutzer sieht einen Server. Der Switch verteilt auf mehrere Server, per Round Robin oder nach gemeldeter Auslastung.</li>
+</ul>
+<p><strong>Netzwerk-Analyzer (Sniffer)</strong></p>
+<ul>
+<li>Wireshark (früher Ethereal), Microsoft Network Monitor. Zeigt Frames bis aufs Bit.</li>
+<li>Netzwerkkarte muss im Promiscuous Mode laufen, um alles mitzuschneiden. Filter z.B. udp || tcp.</li>
+<li>Dual-Use-Tool: Einsatz braucht Genehmigung. In Deutschland: §§ 202b, 202c StGB (Hackerparagraphen, seit 20.08.2007).</li>
+</ul>
+<p><strong>Data Center Bridging (DCB)</strong></p>
+<ul>
+<li>Hinweis: Die Folien dazu fehlen in der PDF (nur im Inhaltsverzeichnis).</li>
+</ul>
+<h2>Lernblatt Kap. 5: Internet Protokoll v4</h2>
+<p><strong>Organisationen</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISOC</td>
+<td>Internet Society, Dach (juristisch)</td>
+</tr>
+<tr>
+<td>IAB</td>
+<td>Internet Architecture Board</td>
+</tr>
+<tr>
+<td>IETF</td>
+<td>Internet Engineering Task Force, arbeitet Standards aus (freiwillig, jeder darf mitmachen)</td>
+</tr>
+<tr>
+<td>IESG</td>
+<td>Steuerungsgruppe der IETF</td>
+</tr>
+<tr>
+<td>IRTF</td>
+<td>Forschung</td>
+</tr>
+<tr>
+<td>IANA</td>
+<td>vergibt Adressen, Ports, Protokollnummern</td>
+</tr>
+<tr>
+<td>ICANN</td>
+<td>Namen und Nummern (Dach der IANA)</td>
+</tr>
+<tr>
+<td>RFC-Editor</td>
+<td>veröffentlicht RFCs</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>IP-Adressen: IANA → RIR (5 Stück) → LIR (Provider) → Kunde.</li>
+<li>RIRs: ARIN (Amerika), RIPE NCC (Europa), APNIC (Asien/Pazifik), LACNIC (Lateinamerika), AFRINIC (Afrika).</li>
+<li>RFC-Stati: Informational, Experimental, Best Current Practice (BCP), Proposed Standard, Draft Standard (nicht mehr genutzt), Internet Standard (STD, höchste Reife), Historic (nicht mehr empfohlen), Obsolete (abgelöst). Arbeitsdokumente (Internet-Drafts) werden nach 6 Monaten gelöscht oder zum RFC befördert.</li>
+</ul>
+<p><strong>TCP/IP-Modell</strong> (vs. OSI): Anwendung (OSI 5–7), Transport (4), Internet (3), Netzzugang (1–2). Vergleichbar, aber nicht gleich.</p>
+<p><strong>IPv4-Adressklassen</strong> (32 Bit)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Klasse</th>
+<th>1. Byte</th>
+<th>Netz / Host</th>
+<th>Hosts je Netz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>1–126 (Bits 0…)</td>
+<td>8 / 24</td>
+<td>2^24 − 2 = 16.777.214</td>
+</tr>
+<tr>
+<td>B</td>
+<td>128–191 (Bits 10…)</td>
+<td>16 / 16</td>
+<td>2^16 − 2 = 65.534</td>
+</tr>
+<tr>
+<td>C</td>
+<td>192–223 (Bits 110…)</td>
+<td>24 / 8</td>
+<td>2^8 − 2 = 254</td>
+</tr>
+<tr>
+<td>D</td>
+<td>224–239 (Bits 1110…)</td>
+<td>Multicast</td>
+<td>–</td>
+</tr>
+<tr>
+<td>E</td>
+<td>240–255</td>
+<td>reserviert</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Alle Hostbits 0 = Netzadresse. Alle Hostbits 1 = Broadcast. Deshalb "− 2".</li>
+<li>127.x.x.x = Loopback (nicht Klasse A nutzbar).</li>
+<li>Private Adressen (RFC 1918, nicht im Internet geroutet): 10.0.0.0/8, 172.16.0.0/12 (172.16–172.31), 192.168.0.0/16.</li>
+<li>APIPA (RFC 3927): 169.254.0.0/16. Client nimmt sich die selbst, wenn kein DHCP-Server antwortet.</li>
+<li>Carrier-Grade NAT (RFC 6598): 100.64.0.0/10 (Dual-Stack Lite).</li>
+<li>Sonderadressen: RFC 6890.</li>
+</ul>
+<p><strong>Netzmaske, Subnetting, CIDR</strong></p>
+<ul>
+<li>Maske = links Einsen (Netzanteil), rechts Nullen (Hostanteil). Sie ist die Grenze. Router und Hosts nutzen sie, um zu entscheiden: Ziel im gleichen Netz (direkt, ARP) oder nicht (Default Gateway).</li>
+<li>Subnetting: Hostbits werden zu Netzbits. 1 Bit mehr = doppelt so viele Netze, halb so viele Hosts.</li>
+<li>CIDR (RFC 4632): klassenlos, Schreibweise Adresse/Präfixlänge. Beispiel 132.215.63.9 /19 = 255.255.224.0, Netz 132.215.32.0.</li>
+<li>Hosts je Netz = 2^(32 − Präfix) − 2.</li>
+<li>Masken-Byte: 128, 192, 224, 240, 248, 252, 254, 255 (1 bis 8 Einsen).</li>
+<li>Blockgröße im letzten relevanten Byte = 256 − Masken-Byte. /27 → .224 → Blockgröße 32.</li>
+<li>Netze müssen an ihrer eigenen Grenze beginnen und dürfen sich nicht überlappen (wie Tortenstücke).</li>
+<li>VLSM (RFC 1878): Subnetze unterschiedlicher Größe. Immer das größte zuerst vergeben.</li>
+<li>Supernetting / Route Aggregation: mehrere Netze zu einer Route zusammenfassen. Beispiel: 172.16.0.0 bis 172.31.0.0 (16 Klasse-B-Netze) = 172.16.0.0/12. Spart Routing-Tabelleneinträge. Wilder Adresshandel zerstört das.</li>
+</ul>
+<p><strong>Rechenbeispiele</strong> (alles nachgerechnet)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Adresse</th>
+<th>Netz</th>
+<th>Broadcast</th>
+<th>Hosts</th>
+<th>Host-Bereich</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.123.55 /27</td>
+<td>192.168.123.32</td>
+<td>.63</td>
+<td>30</td>
+<td>.33 bis .62</td>
+</tr>
+<tr>
+<td>192.168.123.55 /29</td>
+<td>192.168.123.48</td>
+<td>.55</td>
+<td>6</td>
+<td>.49 bis .54</td>
+</tr>
+<tr>
+<td>83.190.125.13 /13</td>
+<td>83.184.0.0</td>
+<td>83.191.255.255</td>
+<td>524.286</td>
+<td>83.184.0.1 bis 83.191.255.254</td>
+</tr>
+<tr>
+<td>129.103.67.98 /18</td>
+<td>129.103.64.0</td>
+<td>129.103.127.255</td>
+<td>16.382</td>
+<td>129.103.64.1 bis .127.254</td>
+</tr>
+<tr>
+<td>189.188.177.166 /19</td>
+<td>189.188.160.0</td>
+<td>189.188.191.255</td>
+<td>8.190</td>
+<td>189.188.160.1 bis .191.254</td>
+</tr>
+<tr>
+<td>10.200.155.243 /25</td>
+<td>10.200.155.128</td>
+<td>10.200.155.255</td>
+<td>126</td>
+<td>.129 bis .254</td>
+</tr>
+<tr>
+<td>152.77.234.62 /20</td>
+<td>152.77.224.0</td>
+<td>152.77.239.255</td>
+<td>4.094</td>
+<td>152.77.224.1 bis .239.254</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Aufgabe 6 (/29): Die Adresse 192.168.123.55 ist die Broadcast-Adresse ihres Netzes. Sie ist als Hostadresse unzulässig.</li>
+<li>Falle mit /27: Station .213 und Station .230 mit /27 lassen sich konfigurieren, liegen aber in verschiedenen Netzen (.192er-Netz: 192–223, .224er-Netz: 224–255).</li>
+<li>Hosts bei Maske 255.255.252.0 (= /22): 2^10 − 2 = 1022.</li>
+<li>Anzahl Subnetze = 2^(Subnetzbits ab Standardmaske). Beispiel 152.77.234.62 /20: Klasse B (Standard /16), 4 Subnetzbits → 16 Subnetze.</li>
+</ul>
+<p><strong>VLSM-Übung</strong> (222.111.0.0 /24)</p>
+<p>Bedarf: A 100 Hosts, B 20, C 10, W 2 (Transportnetz West), O 2. Vorgehen: Größe + 2 (Netz + Broadcast), auf nächste Zweierpotenz aufrunden, größten Block zuerst.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Subnetz</th>
+<th>Präfix</th>
+<th>Netzadresse</th>
+<th>Hosts (erste bis letzte)</th>
+<th>Broadcast</th>
+<th>nutzbar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>/25</td>
+<td>222.111.0.0</td>
+<td>.1 bis .126</td>
+<td>.127</td>
+<td>126</td>
+</tr>
+<tr>
+<td>B</td>
+<td>/27</td>
+<td>222.111.0.128</td>
+<td>.129 bis .158</td>
+<td>.159</td>
+<td>30</td>
+</tr>
+<tr>
+<td>C</td>
+<td>/28</td>
+<td>222.111.0.160</td>
+<td>.161 bis .174</td>
+<td>.175</td>
+<td>14</td>
+</tr>
+<tr>
+<td>W</td>
+<td>/30</td>
+<td>222.111.0.176</td>
+<td>.177 bis .178</td>
+<td>.179</td>
+<td>2</td>
+</tr>
+<tr>
+<td>O</td>
+<td>/30</td>
+<td>222.111.0.180</td>
+<td>.181 bis .182</td>
+<td>.183</td>
+<td>2</td>
+</tr>
+</tbody>
+</table></div>
+<p>Danach frei: ab 222.111.0.184 (bis .255).</p>
+<p><strong>ARP (Address Resolution Protocol)</strong></p>
+<ul>
+<li>Findet die MAC-Adresse zu einer IP im gleichen Netz.</li>
+<li>Ziel im gleichen Netz (Net-ID gleich): ARP-Request als Broadcast (FF:FF:FF:FF:FF:FF) "Wer hat IP x?". Der Besitzer antwortet per ARP-Reply (Unicast) mit seiner MAC.</li>
+<li>Ziel in anderem Netz: ARP nach dem Default Gateway (Router). Das Paket trägt MAC des Routers, aber IP des echten Ziels.</li>
+<li>Ergebnis im ARP-Cache (Eintrag verfällt nach ca. 2 Minuten ohne Nutzung). Anzeigen: arp -a. Löschen: arp -d.</li>
+<li>ARP-Spoofing: Angreifer antwortet mit falscher MAC → Man-in-the-Middle.</li>
+<li>ARP-Request ist ein Broadcast und wird auf Mindestlänge 64 Byte aufgefüllt (Padding).</li>
+</ul>
+<p><strong>IPv4-Header (RFC 791)</strong> (min. 20 Byte, IHL in 32-Bit-Wörtern)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Größe</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>4 Bit</td>
+<td>= 4 (0100)</td>
+</tr>
+<tr>
+<td>IHL</td>
+<td>4 Bit</td>
+<td>Headerlänge in 32-Bit-Wörtern (min. 5)</td>
+</tr>
+<tr>
+<td>DiffServ (früher TOS)</td>
+<td>8 Bit</td>
+<td>Priorität / Dienstklasse</td>
+</tr>
+<tr>
+<td>Total Length</td>
+<td>16 Bit</td>
+<td>Header + Daten, max. 65.535 Byte</td>
+</tr>
+<tr>
+<td>Identification</td>
+<td>16 Bit</td>
+<td>gleiche Nummer für alle Fragmente eines Pakets</td>
+</tr>
+<tr>
+<td>Flags</td>
+<td>3 Bit</td>
+<td>0, DF (Don't Fragment), MF (More Fragments)</td>
+</tr>
+<tr>
+<td>Fragment Offset</td>
+<td>13 Bit</td>
+<td>Abstand in 8-Byte-Blöcken</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>8 Bit</td>
+<td>wird je Router um 1 verringert, bei 0 verworfen (Schleifenschutz)</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>8 Bit</td>
+<td>Layer-4-Protokoll: ICMP 1, TCP 6, UDP 17</td>
+</tr>
+<tr>
+<td>Header Checksum</td>
+<td>16 Bit</td>
+<td>nur über den Header</td>
+</tr>
+<tr>
+<td>Source / Destination</td>
+<td>je 32 Bit</td>
+<td>IP-Adressen</td>
+</tr>
+<tr>
+<td>Options + Padding</td>
+<td>variabel</td>
+<td>Record Route, Source Route, Time Stamp; auf 32 Bit aufgefüllt</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Fragmentierung: Router darf ein Paket zerlegen, wenn die MTU des nächsten Links kleiner ist (und DF nicht gesetzt). Zusammensetzen (Reassembly) macht erst der Empfänger. Beispiel: ping -l 1500 über eine serielle Strecke mit MTU 500 → Router Acapulco fragmentiert, Ziel-PC setzt zusammen.</li>
+</ul>
+<p><strong>ICMP (RFC 792)</strong></p>
+<ul>
+<li>Fehler- und Statusmeldungen zwischen Hosts und Routern. Protokollnummer 1. Wird in IP-Paketen transportiert, ist aber kein echtes Layer-4-Protokoll.</li>
+<li>Nutzung: ping (Echo Request / Reply), traceroute (steigende TTL, Time Exceeded), Destination Unreachable.</li>
+<li>Der ICMP-Datenteil enthält den IP-Header und die ersten 64 Bit der Daten des auslösenden Pakets.</li>
+<li>Keine ICMP-Antwort auf ICMP-Fehler, Multicast und Broadcast.</li>
+</ul>
+<p><strong>DHCP</strong></p>
+<ul>
+<li>Gibt automatisch: IP-Adresse, Maske, Default Gateway, DNS-Server (plus Lease-Time, weitere Optionen).</li>
+<li>Ablauf (UDP): 1) DISCOVER (Client, Broadcast, Quelle 0.0.0.0, Ziel 255.255.255.255). 2) OFFER (Server bietet Adresse an). 3) REQUEST (Client wählt eines). 4) ACK (Server bestätigt). Merkhilfe: <strong>DORA</strong>.</li>
+<li>Nach der Hälfte der Lease-Time verlängert der Client (neuer REQUEST → ACK).</li>
+<li>Kein DHCP-Server erreichbar → APIPA 169.254.0.0/16.</li>
+</ul>
+<h2>Lernblatt Kap. 6: Internet Protokoll v6</h2>
+<p><strong>Warum IPv6?</strong></p>
+<ul>
+<li>128 Bit statt 32 Bit: 2^128 ≈ 3,4 × 10^38 Adressen (340 Sextillionen), 2^96 mal mehr.</li>
+<li>Einfachere Autokonfiguration, einfacherer Header, schnellere Router, Flow Label, bessere Optionen.</li>
+<li>Warum nicht schon längst umgestellt? IPv4 reicht noch (4,3 Mrd.), Hardware-Kosten, Bequemlichkeit, "Never touch a running system". IPv6 ist mehr als ein kleines Update. RFC 2460 (Dez. 1998), Internet-Standard erst seit Juli 2017 (RFC 8200, STD 86).</li>
+</ul>
+<p><strong>IPv6-Header (RFC 8200)</strong>: fest 40 Byte (10 × 32 Bit), IPv4 hat min. 20 Byte. Keine Header-Checksumme.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Größe</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>4 Bit</td>
+<td>= 6 (0110)</td>
+</tr>
+<tr>
+<td>Traffic Class</td>
+<td>8 Bit</td>
+<td>Priorität (wie DiffServ, 6 Bit DSCP + 2 Bit ECN)</td>
+</tr>
+<tr>
+<td>Flow Label</td>
+<td>20 Bit</td>
+<td>markiert zusammengehörende Pakete (QoS)</td>
+</tr>
+<tr>
+<td>Payload Length</td>
+<td>16 Bit</td>
+<td>Länge hinter dem Grundheader (0 = Jumbo, &gt;64 kB, dann Hop-by-Hop)</td>
+</tr>
+<tr>
+<td>Next Header</td>
+<td>8 Bit</td>
+<td>nächster Header (wie Protocol bei IPv4)</td>
+</tr>
+<tr>
+<td>Hop Limit</td>
+<td>8 Bit</td>
+<td>wie TTL</td>
+</tr>
+<tr>
+<td>Source / Destination</td>
+<td>je 128 Bit</td>
+<td>Adressen</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Unterschiede zu IPv4 (3 nennen): 128 statt 32 Bit, fester Header ohne Checksumme, Router fragmentieren nicht, kein Broadcast (nur Multicast), NDP statt ARP, SLAAC, IPsec eingebaut (ist heute aber auch nach IPv4 portiert).</li>
+</ul>
+<p><strong>Erweiterungsheader</strong> (hängen als Kette über Next Header)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Next-Header-Wert</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hop-by-Hop Options</td>
+<td>0</td>
+<td>wird von jedem Knoten gelesen (z.B. Jumbo-Paket)</td>
+</tr>
+<tr>
+<td>Destination Options</td>
+<td>60</td>
+<td>für das Ziel</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>43</td>
+<td>Liste von Zwischenknoten (Typ 0 wegen Sicherheit verboten)</td>
+</tr>
+<tr>
+<td>Fragment</td>
+<td>44</td>
+<td>Fragmentierung (macht nur der Absender)</td>
+</tr>
+<tr>
+<td>Authentication (AH)</td>
+<td>51</td>
+<td>Echtheit und Integrität</td>
+</tr>
+<tr>
+<td>ESP</td>
+<td>50</td>
+<td>Verschlüsselung</td>
+</tr>
+<tr>
+<td>Mobility</td>
+<td>135</td>
+<td>Mobile IPv6 (Home Agent, Care-of-Address)</td>
+</tr>
+<tr>
+<td>ICMPv6</td>
+<td>58</td>
+<td>wie Layer 4 transportiert</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>IPsec (RFC 4301) / VPN</strong></p>
+<ul>
+<li>Ziel: Kommunikation über unsichere Netze authentifiziert, integer und vertraulich.</li>
+<li>AH (Authentication Header): nur Echtheit und Integrität, keine Verschlüsselung. Felder: Next Header, Payload Length, SPI, Sequence Number (Schutz vor Replay), Authentication Data (ICV).</li>
+<li>ESP (Encapsulating Security Payload): verschlüsselt (und kann auch Integrität). Felder: SPI, Sequence Number, Payload, Padding, Pad Length, Next Header, ICV.</li>
+<li>SPI = Security Parameter Index: zeigt auf die Security Association (Algorithmen, Schlüssel).</li>
+<li>Transportmodus: Original-IP-Header bleibt, nur Nutzdaten geschützt. End-to-End, privat üblich.</li>
+<li>Tunnelmodus: ganzes Original-Paket wird geschützt und in neues IP-Paket gepackt (neuer Header mit Adressen der VPN-Gateways). Site-to-Site und End-to-Site (Homeoffice).</li>
+</ul>
+<p><strong>Schreibweise (RFC 5952)</strong></p>
+<ul>
+<li>8 Blöcke mit je 16 Bit, hex, getrennt durch ":". Führende Nullen weglassen. Die längste Null-Folge (mehr als ein Block) einmal mit "::" abkürzen (bei gleich langen die erste).</li>
+<li>Beispiel: 1234:0000:0000:0000:5678:0000:0000:0bcd → 1234::5678:0:0:bcd.</li>
+<li>In URLs in eckigen Klammern: https://[2001:db8::1234:5678]:443.</li>
+</ul>
+<p><strong>Adressarten</strong></p>
+<ul>
+<li>Unicast: ein Teilnehmer. Anycast: der nächste aus einer Gruppe (gleiche Adresse auf mehreren Geräten, z.B. redundante Router). Multicast: alle einer Gruppe. Broadcast gibt es nicht mehr.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Präfix</th>
+<th>Merkmal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unspezifiziert</td>
+<td>::/128</td>
+<td>"noch keine Adresse", nur als Quelle, nicht geroutet</td>
+</tr>
+<tr>
+<td>Loopback</td>
+<td>::1/128</td>
+<td>verlässt den Knoten nie</td>
+</tr>
+<tr>
+<td>Link-Local</td>
+<td>fe80::/10</td>
+<td>nur im Link, nicht geroutet, Autokonfiguration, NDP (wie APIPA)</td>
+</tr>
+<tr>
+<td>Unique Local (ULA)</td>
+<td>fc00::/7, praktisch fd00::/8</td>
+<td>privat (wie 10.x), 40 Bit Global-ID zufällig, 16 Bit Subnet-ID</td>
+</tr>
+<tr>
+<td>Global Unicast</td>
+<td>2000::/3</td>
+<td>Internet (wie öffentliche IPv4)</td>
+</tr>
+<tr>
+<td>Multicast</td>
+<td>ff00::/8</td>
+<td>Gruppe</td>
+</tr>
+<tr>
+<td>Solicited-Node</td>
+<td>ff02::1:ff00:0/104</td>
+<td>+ untere 24 Bit der Adresse, für NDP</td>
+</tr>
+<tr>
+<td>IPv4-mapped</td>
+<td>::ffff:a.b.c.d</td>
+<td>IPv4 in IPv6</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Global Unicast: 3 Bit (001) + 45 Bit Global Routing Prefix + 16 Bit Subnet-ID + 64 Bit Interface-ID. Provider vergibt meist /48 oder /56, Kunde teilt in /64-Subnetze. Subnetze sind immer /64 (SLAAC).</li>
+<li>Multicast: ff + Flags (4 Bit) + Scope (4 Bit) + Gruppen-ID. Scope: 1 interface-local, 2 link-local, 5 site-local, e global. ff02::1 = alle Knoten (Link), ff02::2 = alle Router, ff02::1:2 = DHCPv6-Server.</li>
+<li>Ein Knoten hat immer: eine Link-Local pro Interface, ::1, ff02::1 und ff02::2 (Membership), Solicited-Node-Multicast, ggf. ULA/Global.</li>
+</ul>
+<p><strong>Subnetting IPv6</strong></p>
+<ul>
+<li>Hinweis: Die Folie "IPv6 Subnetting" ist nicht in der PDF (nur Titel). Allgemein: Präfix /48 vom Provider, 16 Bit Subnet-ID → 2^16 = 65.536 Subnetze mit /64. Interface-ID immer 64 Bit.</li>
+<li>Beispiel: 2001:db8:abcd::/48 → Subnetz 1: 2001:db8:abcd:1::/64, Subnetz 2: 2001:db8:abcd:2::/64, …, 2001:db8:abcd:ffff::/64.</li>
+</ul>
+<p><strong>Interface-ID aus MAC (EUI-64)</strong></p>
+<ol>
+<li>MAC 00:50:2c:01:5d:b7 teilen: 00:50:2c | 01:5d:b7.</li>
+<li>In der Mitte ff:fe einfügen: 00:50:2c:ff:fe:01:5d:b7.</li>
+<li>
+<ol start="7">
+<li>Bit des ersten Bytes (U/L-Bit) umdrehen: 00 → 02.</li>
+</ol>
+</li>
+<li>Ergebnis: 02:50:2c:ff:fe:01:5d:b7 → Link-Local fe80::250:2cff:fe01:5db7.</li>
+</ol>
+<ul>
+<li>Nachteil: Interface-ID bleibt gleich → Gerät ist verfolgbar. Lösung: Privacy Extensions (zufällige, wechselnde Interface-ID, alte Adresse wird deprecated).</li>
+</ul>
+<p><strong>SLAAC</strong> (Stateless Address Autoconfiguration, RFC 4862)</p>
+<ol>
+<li>Link-Local-Adresse bilden (fe80:: + Interface-ID).</li>
+<li>Doppelte Adresse prüfen (DAD).</li>
+<li>Router Solicitation (Typ 133) an ff02::2 senden.</li>
+<li>Router antwortet mit Router Advertisement (Typ 134, auch periodisch) an ff02::1 mit dem Präfix.</li>
+<li>Client baut Global Unicast = Präfix + Interface-ID.</li>
+</ol>
+<p><strong>ICMPv6 (RFC 4443)</strong></p>
+<ul>
+<li>Pflicht für IPv6. Next Header 58. Zwei Meldungsarten: Fehlermeldungen und Informationsmeldungen. Unterschied zu ICMPv4: Es ist fester Teil von IPv6 und trägt auch NDP und Multicast-Verwaltung.</li>
+</ul>
+<p><strong>NDP (Neighbor Discovery Protocol, RFC 4861)</strong> ersetzt ARP, läuft über ICMPv6 (nicht direkt auf Layer 2, daher unabhängiger vom Link-Layer). Kann auch DAD und SLAAC.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Name</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>133</td>
+<td>Router Solicitation</td>
+<td>Host fragt nach Routern</td>
+</tr>
+<tr>
+<td>134</td>
+<td>Router Advertisement</td>
+<td>Router meldet Präfix und sich selbst</td>
+</tr>
+<tr>
+<td>135</td>
+<td>Neighbor Solicitation</td>
+<td>"Welche MAC hat diese IP?" (an Solicited-Node-Multicast)</td>
+</tr>
+<tr>
+<td>136</td>
+<td>Neighbor Advertisement</td>
+<td>Antwort oder unaufgefordert</td>
+</tr>
+<tr>
+<td>137</td>
+<td>Redirect</td>
+<td>besserer Next Hop</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Anzeigen: netsh interface ipv6 show neighbors (Windows).</li>
+</ul>
+<p><strong>Fragmentierung</strong></p>
+<ul>
+<li>Router fragmentieren nicht. Der Host ermittelt die Path MTU (RFC 8201): Router meldet "Packet Too Big" (ICMPv6), Host verkleinert und fragmentiert selbst (Fragment-Header).</li>
+</ul>
+<p><strong>Migration IPv4 → IPv6</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Verfahren</th>
+<th>Idee</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dual Stack</td>
+<td>Knoten spricht IPv4 und IPv6 parallel</td>
+</tr>
+<tr>
+<td>Dual Stack Lite (RFC 6333)</td>
+<td>Kunde nur IPv6, IPv4 wird in IPv6 getunnelt zum Carrier-Grade NAT (CGN) des Providers, dazwischen 100.64.0.0/10. Nachteil: kein IPv4-Portforwarding von außen</td>
+</tr>
+<tr>
+<td>Tunneling 6in4</td>
+<td>IPv6-Paket in IPv4-Paket (Protokoll 41) zwischen zwei Dual-Stack-Routern</td>
+</tr>
+<tr>
+<td>6to4 (RFC 3056)</td>
+<td>Präfix 2002::/16 + IPv4-Adresse in hex. Beispiel 123.156.67.42 → 2002:7b9c:432a::/48. Tunnelziel: Anycast 192.88.99.1. Braucht öffentliche IPv4</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Frage 15: reines IPv4-LAN mit IPv6-LAN → Tunneling (6in4, 6to4). Frage 16: IPv4-Host ins IPv6-Internet → Übersetzung (Proxy/Gateway, z.B. NAT64; Folie nennt es nicht, das ist Allgemeinwissen).</li>
+</ul>
+<h2>Lernblatt Kap. 7: TCP und UDP (Layer 4)</h2>
+<p><strong>Ports</strong></p>
+<ul>
+<li>Port = Adresse der Anwendung auf Layer 4 (16 Bit, 0–65535). TCP und UDP nutzen dieselben Nummern. Verwaltet von der IANA.</li>
+<li>0–1023 System Ports (Well Known). 1024–49151 User Ports (Registered). 49152–65535 Private / dynamische Ports.</li>
+<li>Socket = IP-Adresse + Port. Beispiel IPv4: 192.168.1.10:80. IPv6: [2001::1:0:0:10]:80.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Dienst</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20, 21</td>
+<td>FTP (Daten, Steuerung)</td>
+</tr>
+<tr>
+<td>22</td>
+<td>SSH</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Telnet</td>
+</tr>
+<tr>
+<td>25</td>
+<td>SMTP</td>
+</tr>
+<tr>
+<td>53</td>
+<td>DNS</td>
+</tr>
+<tr>
+<td>69</td>
+<td>TFTP (UDP)</td>
+</tr>
+<tr>
+<td>80</td>
+<td>HTTP</td>
+</tr>
+<tr>
+<td>110</td>
+<td>POP3</td>
+</tr>
+<tr>
+<td>115</td>
+<td>SFTP</td>
+</tr>
+<tr>
+<td>123</td>
+<td>NTP (UDP)</td>
+</tr>
+<tr>
+<td>137–139</td>
+<td>NetBIOS (NBNS)</td>
+</tr>
+<tr>
+<td>143</td>
+<td>IMAP</td>
+</tr>
+<tr>
+<td>443</td>
+<td>HTTPS</td>
+</tr>
+<tr>
+<td>993</td>
+<td>IMAPS</td>
+</tr>
+<tr>
+<td>995</td>
+<td>POP3S</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Zusätzlich (Allgemeinwissen, nicht auf den Folien): DHCP 67/68 (UDP), SNMP 161 (UDP), RDP 3389.</li>
+</ul>
+<p><strong>TCP</strong> (Transmission Control Protocol, RFC 793, STD 7): verbindungsorientiert, zuverlässig</p>
+<ul>
+<li>Vier Aufgaben: Segmentierung (Datenstrom in Segmente teilen, mit Sequenznummer, beim Empfänger wieder ordnen), Verbindungsmanagement (Auf- und Abbau), Fehlerbehandlung (Bestätigung, Timer, Wiederholung), Flusssteuerung.</li>
+<li><strong>Three-Way-Handshake</strong> (Aufbau): 1) Client → Server: SYN. 2) Server → Client: SYN + ACK. 3) Client → Server: ACK. Dann Daten.</li>
+<li><strong>Abbau</strong>: FIN → ACK, dann FIN → ACK (von beiden Seiten möglich).</li>
+<li>Fehlerbehandlung: Sender setzt Timer pro Paket. Kein ACK vor Ablauf → Paket neu senden. Sequenznummern erkennen Dubletten und Reihenfolge.</li>
+<li>Flusssteuerung: Endgeräte regeln selbst. Fenstergröße (Window) wird langsam erhöht, bis Pakete verloren gehen, dann halbiert. Window Size ca. 64 kByte. Sliding Window: mehrere Pakete in Folge senden, ACKs kommen verzögert.</li>
+</ul>
+<p><strong>TCP-Header</strong> (min. 20 Byte, max. 60)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Größe</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source Port, Destination Port</td>
+<td>je 16 Bit</td>
+<td>Anwendungen</td>
+</tr>
+<tr>
+<td>Sequence Number</td>
+<td>32 Bit</td>
+<td>Nr. des ersten Datenbytes (bei SYN: ISN)</td>
+</tr>
+<tr>
+<td>Acknowledgment Number</td>
+<td>32 Bit</td>
+<td>nächstes erwartetes Byte (nur mit ACK-Flag)</td>
+</tr>
+<tr>
+<td>Data Offset</td>
+<td>4 Bit</td>
+<td>Headerlänge in 32-Bit-Wörtern</td>
+</tr>
+<tr>
+<td>Reserved</td>
+<td>4 Bit</td>
+<td>reserviert</td>
+</tr>
+<tr>
+<td>Flags</td>
+<td>8 Bit</td>
+<td>CWR, ECE, URG, ACK, PSH, RST, SYN, FIN</td>
+</tr>
+<tr>
+<td>Window</td>
+<td>16 Bit</td>
+<td>wie viele Bytes der Empfänger noch annimmt</td>
+</tr>
+<tr>
+<td>Checksum</td>
+<td>16 Bit</td>
+<td>Header + Daten + Teile des IP-Headers</td>
+</tr>
+<tr>
+<td>Urgent Pointer</td>
+<td>16 Bit</td>
+<td>mit URG, kaum noch genutzt</td>
+</tr>
+<tr>
+<td>Options + Padding</td>
+<td>0–40 Byte</td>
+<td>z.B. max. Segmentgröße (MSS) beim Aufbau</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SYN</td>
+<td>Synchronize, Verbindungsaufbau (Sequenznummern abgleichen)</td>
+</tr>
+<tr>
+<td>ACK</td>
+<td>Acknowledgment, Bestätigungsfeld gültig</td>
+</tr>
+<tr>
+<td>FIN</td>
+<td>keine Daten mehr vom Sender, Abbau</td>
+</tr>
+<tr>
+<td>RST</td>
+<td>Reset, Verbindung hart abbrechen</td>
+</tr>
+<tr>
+<td>PSH</td>
+<td>Push, sofort an Anwendung geben</td>
+</tr>
+<tr>
+<td>URG</td>
+<td>Urgent, dringende Daten (mit Urgent Pointer)</td>
+</tr>
+<tr>
+<td>CWR / ECE</td>
+<td>Congestion Window Reduced / ECN-Echo (Staukontrolle, RFC 3168)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>UDP</strong> (User Datagram Protocol, RFC 768, STD 6): verbindungslos</p>
+<ul>
+<li>Fast keine Kontrolle: keine Bestätigung, keine Reihenfolge, keine Wiederholung. Dafür schnell und wenig Overhead. Für Anwendungen mit eigener Kontrolle oder Echtzeit (DNS, DHCP, NTP, TFTP, Sprache, Video, RIP).</li>
+<li>Header: nur 8 Byte = Source Port, Destination Port, Length, Checksum (je 16 Bit). Checksum optional bei IPv4 (alle 0 = nicht genutzt).</li>
+<li>IP-Protokollnummer: TCP 6, UDP 17, ICMP 1, UDP-Lite 136.</li>
+<li>UDP-Lite (RFC 3828): wie UDP, aber Length-Feld wird zu "Checksum Coverage" (Prüfsumme nur über Teil der Daten). Gut, wenn kleine Fehler tolerierbar sind.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verbindung</td>
+<td>ja (Handshake)</td>
+<td>nein</td>
+</tr>
+<tr>
+<td>Zuverlässig</td>
+<td>ja (ACK, Wiederholung)</td>
+<td>nein</td>
+</tr>
+<tr>
+<td>Reihenfolge</td>
+<td>ja</td>
+<td>nein</td>
+</tr>
+<tr>
+<td>Flusssteuerung</td>
+<td>ja</td>
+<td>nein</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>20–60 Byte</td>
+<td>8 Byte</td>
+</tr>
+<tr>
+<td>Beispiele</td>
+<td>HTTP, FTP, SMTP, SSH</td>
+<td>DNS, DHCP, NTP, TFTP</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Lernblatt Kap. 8a: Router und Routing</h2>
+<p><strong>Router</strong></p>
+<ul>
+<li>Aufgaben: Netze verbinden, beste Wege wählen, redundante Wege, verschiedene Technologien koppeln (Ethernet ↔ DSL), Broadcast und Multicast begrenzen, QoS.</li>
+<li>Jeder Router braucht ein Interface in jedem angeschlossenen Netz.</li>
+<li>Software-Router: PC mit 2 oder mehr Netzwerkkarten und aktiviertem IP-Forwarding. Hardware-Router: SOHO bis Enterprise (50 € bis über 1 Mio. €). Cisco hat ca. 65–70 % Marktanteil.</li>
+<li>Routing = Routing-Tabelle aufbauen (Netz kennenlernen). Forwarding = Paket anhand der Tabelle weiterleiten. Zwei getrennte Prozesse.</li>
+<li>L3-Switch: in Ethernet-Umgebungen preiswerter pro Port. "Routing, wo nötig, Switching, wo möglich."</li>
+<li>Voraussetzungen: L3-Protokoll im Router, Routen (statisch oder per Protokoll), Router in verschiedenen Netzen, Endgeräte kennen ihren Router (Default Gateway).</li>
+</ul>
+<p><strong>Routing-Tabelle</strong></p>
+<ul>
+<li>Spalten: Ziel (Netz/Präfix), Next Hop, Interface, Art (connected, statisch, dynamisch), Metrik.</li>
+<li>Connected = direkt angeschlossenes Netz (Next Hop: selbst). Default Route (0.0.0.0/0): alle Pakete ohne eigenen Eintrag.</li>
+<li>Regel: Longest Prefix Match (der genaueste Eintrag gewinnt; Allgemeinwissen).</li>
+</ul>
+<p><strong>Statisch vs. dynamisch</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Statisch</th>
+<th>Dynamisch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wer pflegt</td>
+<td>Administrator</td>
+<td>Router untereinander (Protokoll)</td>
+</tr>
+<tr>
+<td>Vorteile</td>
+<td>Weg bekannt (Sicherheit), keine CPU-Last, kein Protokollverkehr</td>
+<td>Ersatzwege, automatische Reaktion bei Ausfall, lastabhängig</td>
+</tr>
+<tr>
+<td>Nachteile</td>
+<td>Änderungen mühsam und fehleranfällig, Ersatzwege von Hand</td>
+<td>mehr CPU und Speicher, Protokollverkehr belastet Leitungen</td>
+</tr>
+<tr>
+<td>Einsatz</td>
+<td>kleine Netze, Wählverbindungen</td>
+<td>große Netze</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Windows: route add Netz mask Maske Gateway. route delete Netz. route change … metric …</li>
+<li>Cisco: ip route Netz Maske NextHop. Die Rückroute am anderen Router nicht vergessen!</li>
+</ul>
+<p><strong>Protokoll-Arten</strong></p>
+<ul>
+<li>Classful (Maske nicht in Updates): RIPv1, IGRP. Veraltet. Classless (Maske im Update, VLSM/CIDR): RIPv2, EIGRP, OSPF, IS-IS, BGP4.</li>
+<li>Distance Vector: RIP, RIPv2, RIPng (IPv6). Link State: OSPF (OSPFv2, OSPFv3 für IPv6). Mischform: IGRP, EIGRP.</li>
+</ul>
+<p><strong>Distance Vector (RIP, RFC 1058)</strong></p>
+<ul>
+<li>Router kennt nur Distance (Metrik = Hops) und Vector (Richtung = Next Hop). Er "glaubt" seinen Nachbarn (Routing by Rumor).</li>
+<li>Updates alle 30 s mit der kompletten Tabelle. RIPv1: Broadcast. RIPv2: Multicast. Transport: UDP.</li>
+<li>Max. 15 Hops. 16 = unerreichbar ("Infinity").</li>
+<li>Neue Routen schnell gelernt, ungültige langsam vergessen.</li>
+<li>Problem Count-to-Infinity: Zwei Router melden sich gegenseitig ein ausgefallenes Netz zu, der Hop-Count steigt bis 16. Lösungen: Split Horizon (Info nie zurück in die Richtung schicken, aus der sie kam) und Route Poisoning (ausgefallenes Netz mit Metrik 16 melden).</li>
+</ul>
+<p><strong>Link State (OSPF, RFC 2328, STD 54)</strong></p>
+<ul>
+<li>Jeder Router kennt die ganze Topologie und rechnet sich per Dijkstra-Algorithmus (SPF = Shortest Path First) den besten Weg aus.</li>
+<li>Hello-Pakete: Nachbarn finden und überwachen. Link State Advertisements (LSAs) melden Änderungen an alle. Ergebnis: Link State Database (LSDB). Hoher Speicher- und CPU-Bedarf.</li>
+<li>Kennt CIDR, VLSM, individuelle Pfadkosten, Load Balancing. Verteilung per Multicast oder Unicast.</li>
+<li>5 Pakettypen: Hello, Database Description, Link State Request, Link State Update, Link State Ack.</li>
+<li>Ablauf neuer Router: Hello → Database Descriptor vergleichen → Link State Request → Updates → Ack.</li>
+<li>Hierarchie mit Areas: Backbone Area 0 (alle anderen Areas hängen direkt dran, sonst Virtual Link). Reguläre Areas: Nummer 1 bis 4.294.967.295 oder als IP-Form. Transit Area = Area, die ein Virtual Link überbrückt.</li>
+<li>DR (Designated Router) und BDR (Backup): im Multi-Access-Netz verantwortlich für Verteilung der Updates, weniger Nachbarschaften.</li>
+<li>Routerrollen: Internal Router (nur in einer Area), Backbone Router (in Area 0), ABR (Area Border Router, verbindet Areas, fasst zusammen), ASBR (AS Border Router, verbindet mit anderen AS).</li>
+<li>AS = Autonomous System, AS-Nummern vergibt die IANA.</li>
+<li>Konfiguration (Cisco): router ospf 1, network 10.0.0.0 0.255.255.255 area 0. Wildcard-Maske = 255.255.255.255 minus Subnetzmaske. /24 → 0.0.0.255. /21 (255.255.248.0) → 0.0.7.255. Muss aus zusammenhängenden Nullen und Einsen bestehen (0.0.255.255 erlaubt, 0.255.255.0 nicht).</li>
+</ul>
+<p><strong>IGRP / EIGRP (Cisco)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>IGRP</th>
+<th>EIGRP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Art</td>
+<td>Distance Vector, classful</td>
+<td>Distance Vector, aber mit Topologie-Datenbank wie OSPF, classless</td>
+</tr>
+<tr>
+<td>Metrik</td>
+<td>Bandbreite, Delay, Verlässlichkeit, Auslastung, MTU</td>
+<td>wie IGRP</td>
+</tr>
+<tr>
+<td>Updates</td>
+<td>komplett alle 90 s</td>
+<td>nur Änderungen; Hello alle 5 s (schnelle Links) oder 60 s (langsame)</td>
+</tr>
+<tr>
+<td>Sonstiges</td>
+<td>max. 255 Hops (default 100), Load Balancing auch ungleich</td>
+<td>Summarization, 5 Pakettypen: Hello/Ack, Update, Query, Reply, Request</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>EIGRP-Konfig: router eigrp 1, network 222.111.0.0.</li>
+</ul>
+<h2>Lernblatt Kap. 8b: Firewall und ACL</h2>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Firewall = Rechner (oder Router) mit mind. 2 Netzanschlüssen. Trennt vertrauenswürdige Netze (Intranet) von unsicheren (Internet). Prüft jedes Paket gegen einen Regelsatz (kann auch eine ACL im Router sein).</li>
+<li>Ergebnis: accept (weiterleiten), deny / drop (kommentarlos verwerfen), reject (verwerfen und Absender informieren).</li>
+</ul>
+<p><strong>Kategorien</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Prüft</th>
+<th>Vorteile</th>
+<th>Nachteile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paketfilter</td>
+<td>IP von Quelle und Ziel, Protokoll (TCP/UDP/ICMP), Ports, MAC</td>
+<td>schnell, einfach</td>
+<td>kein Content-Filter, nur Adressen und Ports</td>
+</tr>
+<tr>
+<td>Application-Level (Proxy / Application Gateway)</td>
+<td>Layer 7</td>
+<td>verbirgt interne Netze, gutes Logging, kann Inhalte filtern und cachen</td>
+<td>langsam</td>
+</tr>
+<tr>
+<td>Stateful Inspection (Check Point)</td>
+<td>Verbindungszustand</td>
+<td>merkt sich Verbindungen, lässt nur Antworten zu, findet eingeschmuggelte Pakete, in Routern und Linux-Kernel</td>
+<td>mehr Aufwand als Paketfilter</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Stateful: A spricht mit B → Regel für die Antwort B → A wird dynamisch angelegt und nach Antwort oder Timeout gelöscht. B kann nicht von sich aus anfangen.</li>
+<li>Appliance = Hardware + Software aus einer Hand (Cisco PIX, Astaro). Frei: fli4l, IPCop (Linux). Jeder zusätzliche Dienst auf der Firewall ist ein Risiko.</li>
+<li>Personal Firewall: läuft auf dem zu schützenden PC, blockt unerwünschten ausgehenden Verkehr (Spyware). Falsch konfiguriert gaukelt sie falsche Sicherheit vor. Ersetzt keinen Virenscanner.</li>
+</ul>
+<p><strong>DMZ</strong> (Demilitarisierte Zone)</p>
+<ul>
+<li>Eigenes Netz für Server, die von außen und innen erreichbar sein sollen (Mail, Proxy, Web).</li>
+<li>Braucht Koppelkomponente mit mind. 3 Interfaces: unsicher (WAN), sicher (LAN), DMZ. ACLs sorgen dafür, dass nichts direkt von außen ins LAN kommt.</li>
+<li>Warnung SOHO-Router: "DMZ" mit Exposed Host = ein LAN-Rechner ist direkt aus dem Internet erreichbar, an der Firewall vorbei. Er liegt im selben L2- und IP-Netz wie das LAN. Das ist keine echte DMZ.</li>
+</ul>
+<p><strong>ACL (Access Control List)</strong></p>
+<ul>
+<li>Erkennt Datenströme auf Layer 3 (IP) und 4 (Ports). Einsatz: Paketfilter, debug, Route Redistribution, QoS-Queues, Zugriffsbeschränkung auf den Router, Interesting Traffic (Dial-Up).</li>
+<li>First match: die erste passende Zeile gilt, Reihenfolge ist entscheidend. Am Ende steht unsichtbar implicit deny any any ("Was nicht erlaubt ist, ist verboten").</li>
+<li>Standard-ACL: nur Quell-IP. Nummern 1–99. Syntax: access-list Nr permit|deny Quelle Wildcard. Ohne Wildcard gilt 0.0.0.0 (nur dieser Host).</li>
+<li>Extended-ACL: Quelle, Ziel, Protokoll, Quell- und Zielport. Nummern 100–199 (und 2000–2699). Wildcard-Maske immer angeben. Syntax: access-list Nr permit|deny Protokoll Quelle Wildcard [Operator Port] Ziel Wildcard [Operator Port] [log].</li>
+<li>Wildcard-Maske = 255.255.255.255 minus Subnetzmaske. 172.16.128.0 0.0.0.255 = /24. 172.16.128.0 0.0.3.255 = /22. 10.0.0.0 0.255.255.255 = /8. Einzelner Host: host 192.168.128.1 (= 0.0.0.0). Alles: any (= 0.0.0.0 255.255.255.255).</li>
+<li>Anzeigen: show access-lists, show ip access-lists.</li>
+<li>ACL wird an ein Interface gebunden, mit Richtung in (eingehend) oder out (ausgehend). Nur eine ACL je Protokoll und Richtung je Interface. Erst ACL erstellen, dann ans Interface binden.</li>
+</ul>
+<h2>Lernblatt Kap. 9: Protokolle und Dienste (NAT)</h2>
+<p><strong>Protokolle und Dienste</strong></p>
+<ul>
+<li>Protokoll = Regeln, wie Daten transportiert werden. Dienst = Funktion, die ein Protokoll nutzt (kein Dienst ohne Protokoll). Beispiel: Dienst WWW nutzt Protokoll HTTP. Weitere Dienste: DHCP, DNS, Druckdienste.</li>
+<li>Protokolle für physische Übertragung (CSMA/CD), Routing (RIP, BGP), Datentransport (SMTP, TCP/IP, FTP).</li>
+</ul>
+<p><strong>NAT</strong> (Network Address Translation)</p>
+<ul>
+<li>Problem: Private Adressen (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) werden im Internet nicht geroutet. Antworten müssen aber zurück zum richtigen Rechner.</li>
+<li>Lösung: Der Router übersetzt die private Quelladresse in eine öffentliche (vom ISP) und merkt sich die Zuordnung. Bei der Antwort übersetzt er zurück.</li>
+<li>Inside = eigenes privates Netz. Outside = fremdes, äußeres Netz. (Cisco-Begriffe: inside local, inside global, outside.)</li>
+<li>Vorteile: spart öffentliche Adressen, Hosts sind von außen schwer erreichbar (Schutz).</li>
+<li>Nachteile: Performance-Verlust im Router, keine echte Ende-zu-Ende-Verbindung, Tunneling komplizierter.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>NAT-Art</th>
+<th>Beschreibung</th>
+<th>Heute?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static NAT</td>
+<td>1 private ↔ 1 öffentliche, fest. Spart nichts. Gut für Server, die von außen erreichbar sein sollen</td>
+<td>ja, für Server</td>
+</tr>
+<tr>
+<td>Dynamic NAT</td>
+<td>x private → y öffentliche aus einem Pool. Es müssen genug öffentliche da sein</td>
+<td>kaum noch</td>
+</tr>
+<tr>
+<td>NAT mit PAT (Port Address Translation, auch NAT-Overload)</td>
+<td>viele private → 1 öffentliche Adresse. Unterscheidung über den Quellport</td>
+<td>Standard (Heimrouter, FritzBox)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>PAT: Der Router schreibt Quell-IP und Quellport um und speichert das in der NAT-Tabelle. Kommt die Antwort, schaut er in der Tabelle nach dem Port und leitet an den richtigen internen Rechner. Ports kommen aus Layer 4.</li>
+<li>Beispiel (Allgemeinwissen): 192.168.1.10:50001 → 203.0.113.5:61001, 192.168.1.11:50001 → 203.0.113.5:61002.</li>
+<li>NAT gibt es in IPv6 praktisch nicht mehr nötig (genug Adressen).</li>
+</ul>
+<p><strong>DHCP</strong> (kurz, steht in Kap. 5): DORA = Discover, Offer, Request, Acknowledge. Gibt IP, Maske, Gateway, DNS, Lease-Time. Kein Server → APIPA 169.254.0.0/16.</p>
+</main>
+</body>
+</html>
